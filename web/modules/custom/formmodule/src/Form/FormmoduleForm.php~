@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
+use Drupal\file\Entity\File;
 use Drupal\customutil\CustomUtils;
 use Drupal\formmodule\Controller\Formmodule_biz;
 use Drupal\formmodule\Controller\AutocompleteController;
@@ -106,6 +107,10 @@ class FormmoduleForm extends FormBase {
         ];
         $getfields = json_decode($result['apmdfields'], true);
 	$values = json_decode($formmoduledet['appgroupfields'],true);
+	if ($formmode == 'NEW') {
+	$form['tabscontent']['one']['productinfo1'] = $this->formmoduletab($getfields, $values, $form_state);
+	}
+	else {
 	$form['formcoverstart']['#markup'] = '<div class="kt-portlet">';
         $form['formbody']['#markup'] = '<div class="kt-portlet__body">';
         
@@ -143,26 +148,25 @@ class FormmoduleForm extends FormBase {
         
 
         $form['tabscontent']['one']['productinfo1'] = $this->formmoduletab($getfields, $values, $form_state);
-        $form['tabscontent']['two']['productinfo2'] = $this->milestonetab($formmilestone);
+        $form['tabscontent']['two']['productinfo2'] = $this->milestonetab($formmilestone, $apmdgpk, $appformpk);
         $form['formbodyend']['#markup'] = '</div>';
         $form['formcoverend']['#markup'] = '</div>';
-
-        
+	}
+        $i = count($getfields) - 1;
 	if (!isset($this->display_mode)) {
 	$form['submit'] = [
             '#type' => 'submit',
             '#value' => $this->t('Submit'),
-            '#prefix' => ($i % 2 == 0) ? '<div class="row"><div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="col-md-6">' : '<div class="row"><div class="col-md-6"></div><div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="col-md-6">',
+            '#prefix' => ($i % 2 == 0) ? '<div class="row"><div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="col-md-6">' : '<div class="row"><div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="col-md-6">',
             '#suffix' => '</div>',
-	    '#attributes' => ['style' => 'margin-left: 23px;']
-        ];
+	];
 	}
         else {
 	$edit_formfields = CustomUtils::addButton('formmodule_example_edit', array('apmdgpk' => $apmdgpk, 'appformpk' => $appformpk), 'medium', 'Edit '. $result['apmdgroupname'] . ' Form');
 
         $form['actions']['submitedit'] = [
             '#markup' => $edit_formfields,
-            '#prefix' => ($i % 2 == 0) ? '<div class="row"><div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="kt-portlet__head-toolbar"><div class="kt-portlet__head-wrapper"><div class="kt-portlet__head-actions">' : '<div class="row"><div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="col-md-6"></div><div class="kt-portlet__head-toolbar"><div class="kt-portlet__head-wrapper"><div class="kt-portlet__head-actions">',
+            '#prefix' => ($i % 2 == 0) ? '<div class="row"><div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="kt-portlet__head-toolbar"><div class="kt-portlet__head-wrapper"><div class="kt-portlet__head-actions">' : '<div class="row"><div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="kt-portlet__head-toolbar"><div class="kt-portlet__head-wrapper"><div class="kt-portlet__head-actions">',
             '#suffix' => '</div></div></div>&nbsp;&nbsp;',
         ];
 	$add_formfields = CustomUtils::addButton('formmodule_example.form', array('apmdgpk' => $apmdgpk), 'medium', 'Add '. $result['apmdgroupname'] . ' Form');
@@ -198,6 +202,7 @@ class FormmoduleForm extends FormBase {
     public function formmoduletab($getfields, $values, $form_state) {
 	$ftype = ['DATE' => 'date', 'CHAR' => 'textfield', 'AUTO' => 'textfield', 'SELECT' => 'select', 'FLOAT' => 'textfield', 'CHECK' => 'checkboxes', 'INT' => 'textfield', 'RADIO' => 'textfield', 'TEXT' => 'textarea'];
 	$i = 0;$j = 0;
+	$count = count($getfields) - 1;
 	foreach ($getfields as $fld) {
 	$desc = db_query("SELECT apmddesc from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
 	$type = db_query("SELECT apmdtype from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
@@ -216,8 +221,8 @@ class FormmoduleForm extends FormBase {
             '#default_value' => ($form_state->getValue($fld) != false) ? $form_state->getValue($fld) : $values[$fld],
 	    '#attributes' =>  isset($this->display_mode) ? ['readonly' => 'readonly', 'style' => 'background:#F2F3F8;'] : [], 
 	   // '#description' => empty($aplandesc) ? '' : $this->t($aplandesc),
-            '#prefix' => '<div class="col-md-6">',
-            '#suffix' => '</div>'
+            '#prefix' => ($i == 0) ? '<div class="row"><div class="col-md-6">' : '<div class="col-md-6">',
+            '#suffix' => ($i == $count) ? '</div></div>' : '</div>'
         ];
 	if ($type == 'DATE') {
 	  //$form['h'. $j][$fld]['#date_date_format'] = 'm / d / Y'; 
@@ -232,15 +237,16 @@ class FormmoduleForm extends FormBase {
 	}
 	return $form;
     }
-    public function milestonetab($apmdgpk, $appformpk) {
-	$form['milestonedesc'] = array(
+    public function milestonetab($formmilestone, $apmdgpk, $appformpk) {
+	if (!isset($this->display_mode)) {
+	$form['milestonedesc'] = [
                 '#type' => 'textfield',
                 '#title' => t('Milestone Desc'),
                 '#default_value' => isset($formmilestone['milestonedesc']) ? $formmilestone['milestonedesc'] : '',
 		'#attributes' => isset($this->display_mode) ? ['readonly' => 'readonly', 'style' => 'background:#F2F3F8;'] : '',
                 '#prefix' => '<div class="row"><div class="col-md-12 col-sm-10">',
-                '#suffix' => '</div></div>',
-            );
+                '#suffix' => '</div>',
+            ];
 
         $form['attachment'] = [
             '#type' => 'managed_file',
@@ -250,11 +256,23 @@ class FormmoduleForm extends FormBase {
 	    '#disabled' => isset($this->display_mode) ? TRUE : FALSE,
             '#upload_location' => 'public://items',
 	    '#upload_validators' => array(
-	       'file_validate_extensions' => array('pdf doc docx rtf txt xls xlsx csv bmp jpg jpeg png gif tiff'),
+	       'file_validate_extensions' => array('pdf doc docx rtf txt xls xlsx csv bmp jpg jpeg png gif tiff mp3'),
 	       'file_validate_size' => array(25600000),
 	     ),
-	   // '#suffix' => '</div>'
+	    '#suffix' => '</div>'
 	];
+	}
+	global $base_url;
+	$query = db_select('appattachment', 'a');
+	$query->fields('a');
+        $query->condition('module', 'formmodule', '=');
+        $query->condition('type', $apmdgpk.'-'.$appformpk, '=');
+        $files = $query->execute();
+	$i = 0;
+        foreach($files as $file) {
+	  $form[$i] = ['#markup' => '<div class="col-md-12"><a href="'.$base_url.'/sites/default/files/items/'.$file->filename.'" target="_blank">'.$file->filename.'</a></div>'];
+	  $i++;
+	}
 	return $form;
     }
     public function validateForm(array &$form, FormStateInterface $form_state) {

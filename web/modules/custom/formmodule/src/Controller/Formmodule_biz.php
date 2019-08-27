@@ -1,6 +1,7 @@
 <?php
 
 namespace Drupal\formmodule\Controller;
+use Drupal\file\Entity\File;
 
 Class Formmodule_biz {
 
@@ -82,7 +83,38 @@ Class Formmodule_biz {
             //    ->condition('appformid', $apmdgpk, '=')
                 ->condition('appformpk', $appformpk, '=')
                 ->execute();
+	$image = $form_state->getValue('attachment');
 
+   if ($image[0]) {
+	foreach ($image as $val) {
+	$file = File::load($val);
+        $file->setPermanent();
+	$file->save();
+	$file_usage = \Drupal::service('file.usage'); 
+	$file_usage->add($file, 'formmodule', $apmdgpk . '-' . $appformpk, \Drupal::currentUser()->id());
+	$query = db_select('file_managed', 'a');
+	$query->join('file_usage', 'b', 'b.fid = a.fid');
+        $query->fields('a');
+        $query->fields('b');
+        $query->condition('b.module', 'formmodule', '=');
+        $query->condition('b.type', $apmdgpk.'-'.$appformpk, '=');
+        $query->orderBy('a.fid', 'DESC');
+        $query->range(0, 1);
+        $attach = $query->execute()->fetchAssoc();
+	
+	$insertid = db_insert('appattachment')
+                ->fields([
+                    'fid' => $attach['fid'],
+                    'uid' => $attach['uid'],
+                    'filename' => $attach['filename'],
+                    'filemime' => $attach['filemime'],
+                    'uri' => $attach['uri'],
+                    'module' => $attach['module'],
+                    'type' => $attach['type']
+                ])
+                ->execute();
+	}
+   }
         if (!$update) {
             $transaction->rollback();
         } else {

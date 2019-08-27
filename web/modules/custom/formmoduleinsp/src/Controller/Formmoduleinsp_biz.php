@@ -104,6 +104,7 @@ Class Formmoduleinsp_biz {
 	$query->join('file_usage', 'b', 'b.fid = a.fid');
         $query->fields('a');
         $query->fields('b');
+        $query->condition('b.module', 'formmoduleinsp', '=');
         $query->condition('b.type', $appinspformpk.'-'.$appinspdtlpk, '=');
         $query->orderBy('a.fid', 'DESC');
         $query->range(0, 1);
