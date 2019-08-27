@@ -1,0 +1,7 @@
+forminspection:
+  version: 1.x
+  css:
+    base:
+      css/forminspection.css: {}
+  js:
+    js/forminspection.js: {}
