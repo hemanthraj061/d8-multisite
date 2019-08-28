@@ -16,6 +16,7 @@ summary {
 
 #ajax-wrapper, #kt_tabs_2_2 .row div+div {
    width: 100%;
+   margin-left: 11px;
 }
 .js-form-managed-file .js-form-type-checkbox {
    display: table;
@@ -28,3 +29,69 @@ summary {
    padding-top: 0;
    white-space: nowrap;
 }
+
+.timeline {
+  width:100%;
+  max-width:800px;
+  background:#fff;
+  padding: 100px 50px;
+  position: relative;
+  box-shadow: 0 0 0 0;
+}
+.timeline:before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left:calc(33% + 15px);
+    bottom: 0px;
+    width: 4px;
+    background: #ddd;
+}
+
+.timeline:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.timeline .entry {
+  clear: both;
+  text-align: left;
+  position: relative;
+}
+.timeline .entry .title {
+    margin-bottom: .5em;
+    float: left;
+    width: 33%;
+    padding-right: 30px;
+    text-align: right;
+    position: relative;
+}
+.timeline .title:before {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border: 4px solid salmon;
+      background-color:#fff;
+      border-radius:100%;
+      top: 15%;
+      right: -$dot-diameter;
+      z-index: 99;
+}
+.timeline .title h3 {
+margin: 0;
+font-size: 120%;
+}
+.timeline .title p {
+margin: 0;
+font-size: 100%;
+}
+.timeline .body p {
+line-height: 1.4em;
+}
+.timeline .body p:first-child {
+margin-top: 0;
+font-weight: 400;
+}
+

@@ -35,12 +35,18 @@ Class Formmodule_biz {
     
     static function save_formmodule($form, $form_state, $apmdgpk = '', $apmdgroupname = '') {
         $values = $form_state->getValues();
+	$latitude = empty($values['latitude']) ? '0' : $values['latitude'];
+	$longitude = empty($values['longitude']) ? '0' : $values['longitude'];
 	unset($values['submitup']);
         unset($values['submit']);
         unset($values['form_build_id']);
         unset($values['form_token']);
         unset($values['form_id']);
         unset($values['op']);
+        unset($values['latitude']);
+        unset($values['longitude']);
+        unset($values['milestonedesc']);
+        unset($values['attachment']);
         //DbTransaction
         $transaction = db_transaction();
 	$insertid = db_insert('appform')
@@ -48,6 +54,8 @@ Class Formmodule_biz {
                     'appformid' => $apmdgpk,
                     'appgroupname' => $apmdgroupname,
                     'appgroupfields' => json_encode($values, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT),
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
                     'createdby' => \Drupal::currentUser()->id()
                 ))
                 ->execute();
@@ -64,14 +72,19 @@ Class Formmodule_biz {
     static function edit_formmodule($form, $form_state, $apmdgpk = '', $appformpk = '') {
 
         $values = $form_state->getValues();
-        //DbTransaction
+        $milestonedesc = empty($values['milestonedesc']) ? ' ' : $values['milestonedesc'];
+	//DbTransaction
 	unset($values['submitup']);
         unset($values['submit']);
         unset($values['form_build_id']);
         unset($values['form_token']);
         unset($values['form_id']);
         unset($values['op']);
-
+	unset($values['latitude']);
+        unset($values['longitude']);
+        unset($values['milestonedesc']);
+        unset($values['attachment']);
+        
         $transaction = db_transaction();
 
         $update = db_update('appform')
@@ -96,6 +109,7 @@ Class Formmodule_biz {
 	$query->join('file_usage', 'b', 'b.fid = a.fid');
         $query->fields('a');
         $query->fields('b');
+        $query->condition('b.module', 'formmodule', '=');
         $query->condition('b.type', $apmdgpk.'-'.$appformpk, '=');
         $query->orderBy('a.fid', 'DESC');
         $query->range(0, 1);
@@ -110,6 +124,34 @@ Class Formmodule_biz {
                     'uri' => $attach['uri'],
                     'module' => $attach['module'],
                     'type' => $attach['type']
+                ])
+                ->execute();
+	if (!empty($milestonedesc)) {
+	$insertmile = db_insert('appmilestone')
+                ->fields([
+                    'datetime' => date('Y-m-d H:i:s', time()),
+                    'milestonedesc' => $milestonedesc,
+                    'file' => $attach['filename'],
+                    'filemime' => $attach['filemime'],
+                    'url' => $attach['uri'],
+                    'bopk' => $apmdgpk.'-'.$appformpk,
+                    'botype' => 'formmodule'
+                ])
+                ->execute();
+	}
+	}
+   }
+   else {
+	if (!empty($milestonedesc) || $milestonedesc != ' ') {
+	$insertmile = db_insert('appmilestone')
+                ->fields([
+                    'datetime' => date('Y-m-d H:i:s', time()),
+                    'milestonedesc' => $milestonedesc,
+                    'file' => '',
+                    'filemime' => '',
+                    'url' => '',
+                    'bopk' => $apmdgpk.'-'.$appformpk,
+                    'botype' => 'formmodule'
                 ])
                 ->execute();
 	}

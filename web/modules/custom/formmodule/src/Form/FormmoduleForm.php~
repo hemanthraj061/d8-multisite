@@ -152,6 +152,8 @@ class FormmoduleForm extends FormBase {
         $form['formbodyend']['#markup'] = '</div>';
         $form['formcoverend']['#markup'] = '</div>';
 	}
+	$form['latitude'] = ['#type' => 'hidden', '#attributes' => ['id' => 'edit-latitude']];
+        $form['longitude'] = ['#type' => 'hidden', '#attributes' => ['id' => 'edit-longitude']];
         $i = count($getfields) - 1;
 	if (!isset($this->display_mode)) {
 	$form['submit'] = [
@@ -166,7 +168,7 @@ class FormmoduleForm extends FormBase {
 
         $form['actions']['submitedit'] = [
             '#markup' => $edit_formfields,
-            '#prefix' => ($i % 2 == 0) ? '<div class="row"><div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="kt-portlet__head-toolbar"><div class="kt-portlet__head-wrapper"><div class="kt-portlet__head-actions">' : '<div class="row"><div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="kt-portlet__head-toolbar"><div class="kt-portlet__head-wrapper"><div class="kt-portlet__head-actions">',
+            '#prefix' => ($i % 2 == 0) ? '<div class="row"><div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div class="kt-portlet__head-toolbar"><div class="kt-portlet__head-wrapper"><div class="kt-portlet__head-actions">' : '<div class="row"><div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div class="kt-portlet__head-toolbar"><div class="kt-portlet__head-wrapper"><div class="kt-portlet__head-actions">',
             '#suffix' => '</div></div></div>&nbsp;&nbsp;',
         ];
 	$add_formfields = CustomUtils::addButton('formmodule_example.form', array('apmdgpk' => $apmdgpk), 'medium', 'Add '. $result['apmdgroupname'] . ' Form');
@@ -196,6 +198,14 @@ class FormmoduleForm extends FormBase {
 
 
         $form['#attributes']['enctype'] = 'multipart/form-data';
+	if ($formmode == 'NEW') {
+	$form['#attributes']['onclick'] = 'if(navigator.geolocation){
+	    navigator.geolocation.getCurrentPosition(function(position){
+		document.getElementById("edit-latitude").value = position.coords.latitude;
+		document.getElementById("edit-longitude").value = position.coords.longitude;
+	    });
+	}this.onclick=null;';
+	}
         $form['#attached']['library'][] = 'formmodule/formmodulelib';
         return $form;
     }
@@ -241,14 +251,13 @@ class FormmoduleForm extends FormBase {
 	if (!isset($this->display_mode)) {
 	$form['milestonedesc'] = [
                 '#type' => 'textfield',
-                '#title' => t('Milestone Desc'),
+                '#title' => t('Milestone Description'),
                 '#default_value' => isset($formmilestone['milestonedesc']) ? $formmilestone['milestonedesc'] : '',
 		'#attributes' => isset($this->display_mode) ? ['readonly' => 'readonly', 'style' => 'background:#F2F3F8;'] : '',
                 '#prefix' => '<div class="row"><div class="col-md-12 col-sm-10">',
                 '#suffix' => '</div>',
             ];
-
-        $form['attachment'] = [
+	$form['attachment'] = [
             '#type' => 'managed_file',
             '#title' => t('Attachment'),
             '#attributes' =>  isset($this->display_mode) ? ['disabled' => 'disabled'] : [], 
@@ -262,16 +271,22 @@ class FormmoduleForm extends FormBase {
 	    '#suffix' => '</div>'
 	];
 	}
+	else {
 	global $base_url;
-	$query = db_select('appattachment', 'a');
+	$query = db_select('appmilestone', 'a');
 	$query->fields('a');
-        $query->condition('module', 'formmodule', '=');
-        $query->condition('type', $apmdgpk.'-'.$appformpk, '=');
+        $query->condition('a.botype', 'formmodule', '=');
+        $query->condition('a.bopk', $apmdgpk.'-'.$appformpk, '=');
+      //  $query->groupBy('a.appmilestonepk', 'DESC');
+        $query->orderBy('a.appmilestonepk', 'DESC');
         $files = $query->execute();
 	$i = 0;
         foreach($files as $file) {
-	  $form[$i] = ['#markup' => '<div class="col-md-12"><a href="'.$base_url.'/sites/default/files/items/'.$file->filename.'" target="_blank">'.$file->filename.'</a></div>'];
+	  if ($i == 0) $form['milestone'] = ['#markup' => '<div class="timeline">'];
+	  $form['milestone'][$i] = ['#markup' => '<div class="col-md-12 entry"><h3>'.date('Y-m-d h:i:s A', strtotime($file->datetime)).'</h3><br /><p>' . $file->milestonedesc . '</p><br /><div class="body"><a href="'.$base_url.'/sites/default/files/items/'.$file->file.'" target="_blank">'.$file->file.'</a></div></div>'];
 	  $i++;
+	}
+	$form['milestone']['#suffix'] = '</div>';
 	}
 	return $form;
     }
