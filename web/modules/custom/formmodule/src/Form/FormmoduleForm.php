@@ -277,12 +277,12 @@ class FormmoduleForm extends FormBase {
 	$query->fields('a');
         $query->condition('a.botype', 'formmodule', '=');
         $query->condition('a.bopk', $apmdgpk.'-'.$appformpk, '=');
-        $query->orderBy('a.appmilestonepk', 'DESC');
+        $query->orderBy('a.appmilestonepk', 'ASC');
         $files = $query->execute();
 	$i = 0;
         foreach($files as $file) {
 	  if ($i == 0) $form['milestone'] = ['#markup' => '<div class="timeline">'];
-	  $form['milestone'][$i] = ['#markup' => '<div class="col-md-12 entry"><h3>'.date('Y-m-d h:i:s A', strtotime($file->datetime)).'</h3><br /><p>' . $file->milestonedesc . '</p><br /><div class="body"><a href="'.$base_url.'/sites/default/files/items/'.$file->file.'" target="_blank">'.$file->file.'</a></div></div>'];
+	  $form['milestone'][$i] = ['#markup' => '<div class="col-md-12 container right"><div class="content"><h6>'.$file->milestonedesc.'</h6><p>' . date('d-m-Y h:i:s A', strtotime($file->datetime)) . '</p><div class="body"><a href="'.$base_url.'/sites/default/files/items/'.$file->file.'" target="_blank">'.$file->file.'</a></div></div></div>'];
 	  $i++;
 	}
 	$form['milestone']['#suffix'] = '</div>';
