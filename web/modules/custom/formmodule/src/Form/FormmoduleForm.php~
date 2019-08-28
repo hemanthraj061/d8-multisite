@@ -277,7 +277,6 @@ class FormmoduleForm extends FormBase {
 	$query->fields('a');
         $query->condition('a.botype', 'formmodule', '=');
         $query->condition('a.bopk', $apmdgpk.'-'.$appformpk, '=');
-      //  $query->groupBy('a.appmilestonepk', 'DESC');
         $query->orderBy('a.appmilestonepk', 'DESC');
         $files = $query->execute();
 	$i = 0;
