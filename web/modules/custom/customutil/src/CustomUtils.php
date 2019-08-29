@@ -4,6 +4,7 @@ namespace Drupal\customutil;
 
 use Drupal\Core\Url;
 use Drupal\Core\Link;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 Class CustomUtils {
 
@@ -180,5 +181,12 @@ Class CustomUtils {
 
         return \Drupal::service('renderer')->renderRoot($link_render_array);
     }
-
+    static function getLabel($fld = NULL) {
+	$label = db_query("SELECT apmddesc from {appmetadata} WHERE apmdname = :apmdname LIMIT 1", array(":apmdname" => $fld))->fetchField();
+	$tr = new GoogleTranslate(); // Translates to 'en' from auto-detected language by default
+	$lang = db_query("SELECT langcode from {users} WHERE uid = :uid LIMIT 1", array(":uid" => \Drupal::currentUser()->id()))->fetchField();
+	$tr->setSource('en'); // Translate from English
+	$tr->setTarget($lang); // Translate to Georgian
+	return $tr->translate($label);
+    }
 }

@@ -214,7 +214,7 @@ class FormmoduleForm extends FormBase {
 	$i = 0;$j = 0;
 	$count = count($getfields) - 1;
 	foreach ($getfields as $fld) {
-	$desc = db_query("SELECT apmddesc from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
+	$desc = CustomUtils::getLabel($fld);
 	$type = db_query("SELECT apmdtype from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
 	//$apmdpk = db_query("SELECT apmdpk from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
 	//$aplandesc = db_query("SELECT aplandesc from {appmdlan} WHERE appmdpk = :apmdpk LIMIT 1", array(":apmdpk" => $apmdpk))->fetchField();
@@ -222,7 +222,7 @@ class FormmoduleForm extends FormBase {
 	$hdesc = db_query("SELECT apmddesc from {appmetadata} WHERE apmdname = :apmdname AND apmdtype = 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
 	if (!empty($hdesc)) {
 	   $j++;
-	   $form['h'. $j] = ['#type' => 'details', '#title' => $this->t($hdesc), '#open' => ($j == 1) ? TRUE : FALSE];
+	   $form['h'. $j] = ['#type' => 'details', '#title' => $this->t($desc), '#open' => ($j == 1) ? TRUE : FALSE];
 	}
 	else {
 	$form['h'. $j][$fld] = [

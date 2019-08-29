@@ -214,15 +214,15 @@ class FormmoduleForm extends FormBase {
 	$i = 0;$j = 0;
 	$count = count($getfields) - 1;
 	foreach ($getfields as $fld) {
-	$desc = db_query("SELECT apmddesc from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
+	$desc = CustomUtils::getLabel($fld);
 	$type = db_query("SELECT apmdtype from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
 	//$apmdpk = db_query("SELECT apmdpk from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
 	//$aplandesc = db_query("SELECT aplandesc from {appmdlan} WHERE appmdpk = :apmdpk LIMIT 1", array(":apmdpk" => $apmdpk))->fetchField();
 	$options = json_decode(db_query("SELECT apmdoptions from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField(), true);
-	$hdesc = db_query("SELECT apmddesc from {appmetadata} WHERE apmdname = :apmdname AND apmdtype = 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
-	if (!empty($hdesc)) {
+	$hd = db_query("SELECT apmddesc from {appmetadata} WHERE apmdname = :apmdname AND apmdtype = 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
+	if (!empty($hd)) {
 	   $j++;
-	   $form['h'. $j] = ['#type' => 'details', '#title' => $this->t($hdesc), '#open' => ($j == 1) ? TRUE : FALSE];
+	   $form['h'. $j] = ['#type' => 'details', '#title' => $this->t($desc), '#open' => ($j == 1) ? TRUE : FALSE];
 	}
 	else {
 	$form['h'. $j][$fld] = [
@@ -282,7 +282,7 @@ class FormmoduleForm extends FormBase {
 	$i = 0;
         foreach($files as $file) {
 	  if ($i == 0) $form['milestone'] = ['#markup' => '<div class="timeline">'];
-	  $form['milestone'][$i] = ['#markup' => '<div class="col-md-12 container left"><div class="content"><h6>'.$file->milestonedesc.'</h6><p>' . date('d-m-Y h:i:s A', strtotime($file->datetime)) . '</p><div class="body"><a href="'.$base_url.'/sites/default/files/items/'.$file->file.'" target="_blank">'.$file->file.'</a></div></div></div>'];
+	  $form['milestone'][$i] = ['#markup' => '<div class="col-md-12 container right"><div class="content"><h6>'.$file->milestonedesc.'</h6><p>' . date('d-m-Y h:i:s A', strtotime($file->datetime)) . '</p><div class="body"><a href="'.$base_url.'/sites/default/files/items/'.$file->file.'" target="_blank">'.$file->file.'</a></div></div></div>'];
 	  $i++;
 	}
 	$form['milestone']['#suffix'] = '</div>';
