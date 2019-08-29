@@ -129,7 +129,13 @@ class FormmoduleForm extends FormBase {
             '#prefix' => '<li class="nav-item">',
             '#suffix' => '</li>',
         ];
-        
+	if (isset($this->display_mode)) {
+        $form['tabs']['three'] = [
+            '#markup' => '<a class="nav-link" data-toggle="tab" href="#kt_tabs_2_3">Map View</a>',
+            '#prefix' => '<li class="nav-item">',
+            '#suffix' => '</li>',
+        ];
+	}
         $form['tabscontent'] = [
 //            '#markup' => '',
             '#prefix' => '<div class="tab-content">',
@@ -145,15 +151,28 @@ class FormmoduleForm extends FormBase {
             '#prefix' => '<div class="tab-pane" id="kt_tabs_2_2" role="tabpanel">',
             '#suffix' => '</div>',
         ];
-        
+        if (isset($this->display_mode)) {
+        $form['tabscontent']['three'] = [
+//            '#markup' => '',
+            '#prefix' => '<div class="tab-pane" id="kt_tabs_2_3" role="tabpanel">',
+            '#suffix' => '</div>',
+        ];
+	}
 
         $form['tabscontent']['one']['productinfo1'] = $this->formmoduletab($getfields, $values, $form_state);
         $form['tabscontent']['two']['productinfo2'] = $this->milestonetab($formmilestone, $apmdgpk, $appformpk);
+        if (isset($this->display_mode)) {
+        $form['tabscontent']['three']['productinfo3'] = $this->maptab($formmilestone, $apmdgpk, $appformpk);
+	}
         $form['formbodyend']['#markup'] = '</div>';
         $form['formcoverend']['#markup'] = '</div>';
 	}
 	$form['latitude'] = ['#type' => 'hidden', '#attributes' => ['id' => 'edit-latitude']];
         $form['longitude'] = ['#type' => 'hidden', '#attributes' => ['id' => 'edit-longitude']];
+	if (isset($this->display_mode)) {
+		$form['latitude']['#default_value'] = $formmoduledet['latitude'];
+		$form['longitude']['#default_value'] = $formmoduledet['longitude'];
+	}
         $i = count($getfields) - 1;
 	if (!isset($this->display_mode)) {
 	$form['submit'] = [
@@ -287,6 +306,10 @@ class FormmoduleForm extends FormBase {
 	}
 	$form['milestone']['#suffix'] = '</div>';
 	}
+	return $form;
+    }
+    public function maptab($formmilestone, $apmdgpk, $appformpk) {
+	$form['map'] = ['#markup' => '<div id="map-link" style="height:300px !important;"></div>'];
 	return $form;
     }
     public function validateForm(array &$form, FormStateInterface $form_state) {

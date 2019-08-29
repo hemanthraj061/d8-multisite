@@ -73,7 +73,15 @@ summary {
   .container.right {
     left: 4.2%;
   }
-  
+  #map-link {
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	height: auto;
+	width: auto;
+	min-height: 300px;
+	min-width: 900px;
+}
  /* .container.left::before {
     content: " ";
     height: 0;

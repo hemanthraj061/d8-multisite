@@ -1,7 +1,9 @@
-if(navigator.geolocation){
-    navigator.geolocation.getCurrentPosition(function(position){
-        document.getElementById("edit-latitude").innerHTML = position.coords.latitude;
-        document.getElementById("edit-longitude").innerHTML = position.coords.longitude;
-    });
-}
- 
+$(function() {
+	if ($('#map-link')[0]) {
+                    var map = new GMaps({
+				   div: '#map-link',
+				   lat: $('#edit-latitude').val(),
+				   lng: $('#edit-longitude').val(),
+				});
+	}
+});

@@ -1,5 +1,4 @@
-DROP TABLE IF EXISTS appattachment;
-DROP TABLE IF EXISTS appmilestone;
+
 
 CREATE TABLE `appattachment` (
   `appattachmentpk` int(11) NOT NULL AUTO_INCREMENT COMMENT 'appattachmentpk',
