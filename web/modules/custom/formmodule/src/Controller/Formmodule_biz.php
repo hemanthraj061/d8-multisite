@@ -45,6 +45,9 @@ Class Formmodule_biz {
         unset($values['op']);
         unset($values['latitude']);
         unset($values['longitude']);
+        unset($values['lat']);
+        unset($values['long']);
+        unset($values['location']);
         unset($values['milestonedesc']);
         unset($values['attachment']);
         //DbTransaction
@@ -73,8 +76,8 @@ Class Formmodule_biz {
 
         $values = $form_state->getValues();
         $milestonedesc = empty($values['milestonedesc']) ? ' ' : $values['milestonedesc'];
-	$latitude = empty($values['latitude']) ? '0' : $values['latitude'];
-	$longitude = empty($values['longitude']) ? '0' : $values['longitude'];
+	$latitude = empty($values['lat']) ? '0' : $values['lat'];
+	$longitude = empty($values['long']) ? '0' : $values['long'];
 	//DbTransaction
 	unset($values['submitup']);
         unset($values['submit']);
@@ -84,6 +87,9 @@ Class Formmodule_biz {
         unset($values['op']);
 	unset($values['latitude']);
         unset($values['longitude']);
+        unset($values['lat']);
+        unset($values['long']);
+        unset($values['location']);
         unset($values['milestonedesc']);
         unset($values['attachment']);
         

@@ -5,5 +5,5 @@ formmodulelib:
       css/formmodule.css: {}
   js:
     https://maps.google.com/maps/api/js?key=AIzaSyBWMK7b8wpLMzvfNr_sV603fBgr62Lm5Xo: {type: external, attributes: { defer: true, async: true, data-test: map-link } }
-    js/gmaps.js : {}
-    js/formmodule.js : {}
+    js/gmaps.js: {}
+    js/formmodule.js: {}

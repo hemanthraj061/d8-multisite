@@ -169,6 +169,8 @@ class FormmoduleForm extends FormBase {
 	}
 	$form['latitude'] = ['#type' => 'hidden', '#attributes' => ['id' => 'edit-latitude']];
         $form['longitude'] = ['#type' => 'hidden', '#attributes' => ['id' => 'edit-longitude']];
+	$form['lat'] = ['#type' => 'hidden', '#attributes' => ['id' => 'edit-lat']];
+        $form['long'] = ['#type' => 'hidden', '#attributes' => ['id' => 'edit-long']];
 	if (isset($this->display_mode)) {
 		$form['latitude']['#default_value'] = $formmoduledet['latitude'];
 		$form['longitude']['#default_value'] = $formmoduledet['longitude'];
@@ -222,6 +224,8 @@ class FormmoduleForm extends FormBase {
 	    navigator.geolocation.getCurrentPosition(function(position){
 		document.getElementById("edit-latitude").value = position.coords.latitude;
 		document.getElementById("edit-longitude").value = position.coords.longitude;
+		document.getElementById("edit-lat").value = position.coords.latitude;
+		document.getElementById("edit-long").value = position.coords.longitude;
 	    });
 	}this.onclick=null;';
 	}
@@ -287,8 +291,15 @@ class FormmoduleForm extends FormBase {
 	       'file_validate_extensions' => array('pdf doc docx rtf txt xls xlsx csv bmp jpg jpeg png gif tiff mp3'),
 	       'file_validate_size' => array(25600000),
 	     ),
-	    '#suffix' => '</div>'
 	];
+	$form['location'] = [
+                '#type' => 'textfield',
+                '#title' => t('Location'),
+                '#default_value' => isset($formmilestone['location']) ? $formmilestone['location'] : '',
+		'#attributes' => isset($this->display_mode) ? ['readonly' => 'readonly', 'style' => 'background:#F2F3F8;'] : '',
+                '#prefix' => '<div class="col-md-12 col-sm-10">',
+                '#suffix' => '</div></div>',
+            ];
 	}
 	else {
 	global $base_url;
@@ -299,11 +310,15 @@ class FormmoduleForm extends FormBase {
         $query->orderBy('a.appmilestonepk', 'ASC');
         $files = $query->execute();
 	$i = 0;
+	$mark = [];
         foreach($files as $file) {
 	  if ($i == 0) $form['milestone'] = ['#markup' => '<div class="timeline">'];
 	  $form['milestone'][$i] = ['#markup' => '<div class="col-md-12 container right"><div class="content"><h6>'.$file->milestonedesc.'</h6><p>' . date('d-m-Y h:i:s A', strtotime($file->datetime)) . '</p><div class="body"><a href="'.$base_url.'/sites/default/files/items/'.$file->file.'" target="_blank">'.$file->file.'</a></div></div></div>'];
+	  if (!empty($file->latitude))
+	     $mark[] = ['latitude' => $file->latitude, 'longitude' => $file->longitude, 'content' => $file->milestonedesc];
 	  $i++;
 	}
+	$form['mark'] = ['#type' => 'hidden', '#default_value' => json_encode($mark), '#attributes' => ['id' => 'edit-mark']];
 	$form['milestone']['#suffix'] = '</div>';
 	}
 	return $form;
