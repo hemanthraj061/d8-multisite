@@ -219,8 +219,8 @@ class FormmoduleForm extends FormBase {
 	//$apmdpk = db_query("SELECT apmdpk from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
 	//$aplandesc = db_query("SELECT aplandesc from {appmdlan} WHERE appmdpk = :apmdpk LIMIT 1", array(":apmdpk" => $apmdpk))->fetchField();
 	$options = json_decode(db_query("SELECT apmdoptions from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField(), true);
-	$hd = db_query("SELECT apmddesc from {appmetadata} WHERE apmdname = :apmdname AND apmdtype = 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
-	if (!empty($hd)) {
+	$hdesc = db_query("SELECT apmddesc from {appmetadata} WHERE apmdname = :apmdname AND apmdtype = 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
+	if (!empty($hdesc)) {
 	   $j++;
 	   $form['h'. $j] = ['#type' => 'details', '#title' => $this->t($desc), '#open' => ($j == 1) ? TRUE : FALSE];
 	}

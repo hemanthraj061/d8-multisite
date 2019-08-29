@@ -73,6 +73,8 @@ Class Formmodule_biz {
 
         $values = $form_state->getValues();
         $milestonedesc = empty($values['milestonedesc']) ? ' ' : $values['milestonedesc'];
+	$latitude = empty($values['latitude']) ? '0' : $values['latitude'];
+	$longitude = empty($values['longitude']) ? '0' : $values['longitude'];
 	//DbTransaction
 	unset($values['submitup']);
         unset($values['submit']);
@@ -134,6 +136,8 @@ Class Formmodule_biz {
                     'file' => $attach['filename'],
                     'filemime' => $attach['filemime'],
                     'url' => $attach['uri'],
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
                     'bopk' => $apmdgpk.'-'.$appformpk,
                     'botype' => 'formmodule'
                 ])
@@ -149,6 +153,8 @@ Class Formmodule_biz {
                     'milestonedesc' => $milestonedesc,
                     'file' => '',
                     'filemime' => '',
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
                     'url' => '',
                     'bopk' => $apmdgpk.'-'.$appformpk,
                     'botype' => 'formmodule'

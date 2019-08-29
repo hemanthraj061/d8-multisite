@@ -34,5 +34,3 @@ CREATE TABLE `appmilestone` (
   PRIMARY KEY (`appmilestonepk`),
   UNIQUE KEY `milestonedesc` (`milestonedesc`, `appmilestonepk`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-ALTER TABLE appmdlan CHANGE aplandesc aplandesc TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;

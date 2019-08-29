@@ -183,10 +183,16 @@ Class CustomUtils {
     }
     static function getLabel($fld = NULL) {
 	$label = db_query("SELECT apmddesc from {appmetadata} WHERE apmdname = :apmdname LIMIT 1", array(":apmdname" => $fld))->fetchField();
-	$tr = new GoogleTranslate(); // Translates to 'en' from auto-detected language by default
+	$appmdpk = db_query("SELECT apmdpk from {appmetadata} WHERE apmdname = :apmdname LIMIT 1", array(":apmdname" => $fld))->fetchField();
 	$lang = db_query("SELECT langcode from {users} WHERE uid = :uid LIMIT 1", array(":uid" => \Drupal::currentUser()->id()))->fetchField();
+	$applang = db_query("SELECT aplandesc from {appmdlan} WHERE lang = :lang AND appmdpk = :appmdpk LIMIT 1", array(":lang" => $lang, ":appmdpk" => $appmdpk))->fetchField();
+	if ($lang == 'en') return $label;
+	elseif (!empty($applang)) return $applang;
+	else {
+	$tr = new GoogleTranslate(); // Translates to 'en' from auto-detected language by default
 	$tr->setSource('en'); // Translate from English
 	$tr->setTarget($lang); // Translate to Georgian
 	return $tr->translate($label);
+	}
     }
 }

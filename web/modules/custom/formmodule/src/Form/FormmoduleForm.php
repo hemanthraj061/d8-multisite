@@ -198,7 +198,7 @@ class FormmoduleForm extends FormBase {
 
 
         $form['#attributes']['enctype'] = 'multipart/form-data';
-	if ($formmode == 'NEW') {
+	if ($formmode == 'NEW' || $formmode == 'EDIT') {
 	$form['#attributes']['onclick'] = 'if(navigator.geolocation){
 	    navigator.geolocation.getCurrentPosition(function(position){
 		document.getElementById("edit-latitude").value = position.coords.latitude;
