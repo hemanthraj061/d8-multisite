@@ -36,3 +36,5 @@ CREATE TABLE `appmilestone` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ALTER TABLE appmdlan CHANGE aplandesc aplandesc TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+ALTER TABLE `appmdgroup` ADD COLUMN `floorplan` VARCHAR(10) NULL  AFTER `apkeyfields` ;
+ALTER TABLE `appmdgroup` DROP COLUMN `singleline`;
