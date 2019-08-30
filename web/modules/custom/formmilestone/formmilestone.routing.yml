@@ -1,0 +1,23 @@
+formmilestone_example_display: 
+  path: '/formmilestone/display/{appmilestonepk}'
+  defaults: 
+    _form: '\Drupal\formmilestone\Form\FormmilestoneForm'
+    _title: 'Display Milestone'
+    formmode: 'DISPLAY'
+  requirements:  
+    _permission: 'access content'  
+
+formmilestone_example_delete: 
+  path: '/formmilestone/delete/{appmilestonepk}'
+  defaults: 
+    _form: 'Drupal\formmilestone\Form\Deleteformmilestone'
+    _title: 'Delete Form Field'
+  requirements: 
+    _permission: 'access content'
+
+formmilestone_example.list:
+  path: '/formmilestonelist'
+  defaults: 
+    _controller: '\Drupal\formmilestone\Controller\FormmilestoneController::formmilestonelist'
+  requirements: 
+    _access: 'TRUE'    

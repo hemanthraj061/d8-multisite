@@ -125,7 +125,7 @@ class FormmoduleForm extends FormBase {
             '#suffix' => '</li>',
         ];
         $form['tabs']['two'] = [
-            '#markup' => '<a class="nav-link" data-toggle="tab" href="#kt_tabs_2_2">Milestone</a>',
+            '#markup' => '<a class="nav-link" data-toggle="tab" href="#kt_tabs_2_2">Timeline</a>',
             '#prefix' => '<li class="nav-item">',
             '#suffix' => '</li>',
         ];
@@ -288,7 +288,7 @@ class FormmoduleForm extends FormBase {
 	    '#disabled' => isset($this->display_mode) ? TRUE : FALSE,
             '#upload_location' => 'public://items',
 	    '#upload_validators' => array(
-	       'file_validate_extensions' => array('pdf doc docx rtf txt xls xlsx csv bmp jpg jpeg png gif tiff mp3'),
+	       'file_validate_extensions' => array('pdf doc docx rtf txt xls xlsx csv bmp jpg jpeg png gif tiff mp3 mp4'),
 	       'file_validate_size' => array(25600000),
 	     ),
 	];
@@ -311,11 +311,20 @@ class FormmoduleForm extends FormBase {
         $files = $query->execute();
 	$i = 0;
 	$mark = [];
+	$link_options = array(
+            'attributes' => array(
+                'target' => '_blank',
+            ),
+        );
 	$form['milestone'] = ['#markup' => '<div class="timeline">'];
         foreach($files as $file) {
-	  $form['milestone'][$i] = ['#markup' => '<div class="col-md-12 container right"><div class="content"><h6>'.$file->milestonedesc.'</h6><p>' . date('d-m-Y h:i:s A', strtotime($file->datetime)) . '</p><div class="body"><a href="'.$base_url.'/sites/default/files/items/'.$file->file.'" target="_blank">'.$file->file.'</a></div></div></div>'];
-	  if (!empty($file->latitude))
-	     $mark[] = ['latitude' => $file->latitude, 'longitude' => $file->longitude, 'content' => $file->milestonedesc];
+	  $form['milestone'][$i] = ['#markup' => '<div class="col-md-12 container right"><div class="content"><h6>'.$file->milestonedesc.'</h6><p>' . date('m / d / Y h:i:s A', strtotime($file->datetime)) . '</p><div class="body"><a href="'.$base_url.'/sites/default/files/items/'.$file->file.'" target="_blank">'.$file->file.'</a></div></div></div>'];
+	  if (!empty($file->latitude)) {
+	     $dispurl = Url::fromRoute('formmilestone_example_display', array('appmilestonepk' => $file->appmilestonepk));
+	     $dispurl->setOptions($link_options);
+             $display_formmilestone = \Drupal::l(t($file->milestonedesc), $dispurl);
+	     $mark[] = ['latitude' => $file->latitude, 'longitude' => $file->longitude, 'content' => $display_formmilestone];
+	  }
 	  $i++;
 	}
 	$form['mark'] = ['#type' => 'hidden', '#default_value' => json_encode($mark), '#attributes' => ['id' => 'edit-mark']];
