@@ -45,6 +45,9 @@ Class Formmodule_biz {
         unset($values['op']);
         unset($values['latitude']);
         unset($values['longitude']);
+        unset($values['lat']);
+        unset($values['long']);
+        unset($values['location']);
         unset($values['milestonedesc']);
         unset($values['attachment']);
         //DbTransaction
@@ -173,7 +176,19 @@ Class Formmodule_biz {
     }
 
     static function delete_formmodule($appformpk) {
-        db_delete('appform')
+        $query = db_select('appform', 'a');
+        $query->fields('a');
+        $query->condition('appformpk', $appformpk, '=');
+        $result = $query->execute()->fetchAssoc();
+	$bopk = $result['appformid'].'-'.$appformpk;
+	db_delete('appform')
+                ->condition('appformpk', $appformpk)
+                ->execute();
+	db_delete('appattachment')
+                ->condition('module', 'formmodule')
+                ->condition('type', $bopk)
+                ->execute();
+	db_delete('appform')
                 ->condition('appformpk', $appformpk)
                 ->execute();
     }

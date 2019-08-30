@@ -176,8 +176,21 @@ Class Formmodule_biz {
     }
 
     static function delete_formmodule($appformpk) {
-        db_delete('appform')
+        $query = db_select('appform', 'a');
+        $query->fields('a');
+        $query->condition('appformpk', $appformpk, '=');
+        $result = $query->execute()->fetchAssoc();
+	$bopk = $result['appformid'].'-'.$appformpk;
+	db_delete('appform')
                 ->condition('appformpk', $appformpk)
+                ->execute();
+	db_delete('appattachment')
+                ->condition('module', 'formmodule')
+                ->condition('type', $bopk)
+                ->execute();
+	db_delete('appmilestone')
+                ->condition('botype', 'formmodule')
+                ->condition('bopk', $bopk)
                 ->execute();
     }
 
