@@ -14,7 +14,7 @@ summary {
 }
 #formmodule-example-form .description::before {content: '\A'; white-space: pre;}
 
-#ajax-wrapper, #kt_tabs_2_2 .row div+div {
+#ajax-wrapper, #kt_tabs_2_2 .row div:nth-child(1) {
    width: 100%;
    margin-left: 11px;
 }
@@ -80,7 +80,7 @@ summary {
 	height: auto;
 	width: auto;
 	min-height: 300px;
-	min-width: 890px;
+	min-width: 900px;
 }
  /* .container.left::before {
     content: " ";

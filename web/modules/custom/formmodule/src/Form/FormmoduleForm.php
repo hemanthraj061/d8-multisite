@@ -311,8 +311,8 @@ class FormmoduleForm extends FormBase {
         $files = $query->execute();
 	$i = 0;
 	$mark = [];
+	$form['milestone'] = ['#markup' => '<div class="timeline">'];
         foreach($files as $file) {
-	  if ($i == 0) $form['milestone'] = ['#markup' => '<div class="timeline">'];
 	  $form['milestone'][$i] = ['#markup' => '<div class="col-md-12 container right"><div class="content"><h6>'.$file->milestonedesc.'</h6><p>' . date('d-m-Y h:i:s A', strtotime($file->datetime)) . '</p><div class="body"><a href="'.$base_url.'/sites/default/files/items/'.$file->file.'" target="_blank">'.$file->file.'</a></div></div></div>'];
 	  if (!empty($file->latitude))
 	     $mark[] = ['latitude' => $file->latitude, 'longitude' => $file->longitude, 'content' => $file->milestonedesc];
