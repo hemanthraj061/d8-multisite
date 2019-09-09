@@ -1,0 +1,29 @@
+<?php
+
+function formdashboard_theme($existing, $type, $theme, $path) {
+
+  return [
+    'formdashboardtheme' => [
+//        'variables' =>
+//           [
+//               'templatefields' => NULL,
+//               'form' => NULL
+//           ],
+        'render element' => 'form',
+        'template' => 'my-formdashboard-name',
+    ],
+  ];
+    
+    
+//    return array(
+//        'formbuildtheme' => array(
+//           'variables' =>
+//                [
+//                    'templatefields' => NULL,
+//                    'form' => NULL
+//                ],
+//            'template' => 'my-formbuild-name',
+//            'render element' => 'form'
+//        ),
+//    );    
+}

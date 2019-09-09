@@ -1,0 +1,5 @@
+formdashboard:
+  version: 1.x
+  css:
+    base:
+      css/formdashboard.css: {}

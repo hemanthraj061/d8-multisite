@@ -1,0 +1,21 @@
+.formconf .la-edit {
+    display: none;
+}
+.formconf a {
+    color: #7248BC !important;
+    font-weight: 600;
+}
+.formconf .col-md-6 {
+    border-bottom: 1px solid #ebedf2;
+    padding: 10px 5px 9px 15px;
+    position: relative;
+    margin-left: 20px;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 47%;
+    flex: 0 0 47%;
+    max-width: 47%;
+}
+.formconf .col-md-6:hover {
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 1px 1px 5px #999999;
+}

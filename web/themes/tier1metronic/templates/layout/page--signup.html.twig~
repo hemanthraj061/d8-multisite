@@ -56,6 +56,9 @@
     .description {
 	display: none;
     }
+    body {
+	background: url({{base_path}}/themes/tier1metronic/resource-bg.jpg);
+    }
     #user-login-form {width:354px;}
     #user-login-form .form-required::after {background-image: none;}
     .kt-aside__brand-logo {
@@ -111,11 +114,6 @@
 								    </div>
                                                                     {% if page.content %}
                                                                         {{ page.content }}
-									<div class="forget-password">
-    <p>Forgot your password? Click <a href="{{base_path}}user/password" title="Click here to reset password" id="forget-password">here</a></p>
-  </div><a href="{{base_path}}user/login" type="button" id="back-btn" class="btn btn-label btn-label-brand btn-sm btn-bold">
-      <i class="m-icon-swapleft"></i> Log in
-    </a>
                                                                     {% endif %}
                                                                 </div>
                                                             </div>

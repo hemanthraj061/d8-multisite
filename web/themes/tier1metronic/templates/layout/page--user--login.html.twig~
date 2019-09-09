@@ -66,7 +66,7 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background: url({{base_path}}/themes/tier1metronic/eximdesk-bg.png);
+	background: #ffffff;
 	border-radius: 10px;
 	box-shadow: 7px 7px 5px #bfc7c8;
     }

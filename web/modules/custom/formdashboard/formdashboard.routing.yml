@@ -1,0 +1,6 @@
+formdashboard_example.list:
+  path: '/formdashboard'
+  defaults: 
+    _controller: '\Drupal\formdashboard\Controller\FormdashboardController::formdashboard'
+  requirements: 
+    _access: 'TRUE'    

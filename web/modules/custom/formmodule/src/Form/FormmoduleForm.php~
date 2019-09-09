@@ -289,7 +289,7 @@ class FormmoduleForm extends FormBase {
             '#upload_location' => 'public://items',
 	    '#upload_validators' => array(
 	       'file_validate_extensions' => array('pdf doc docx rtf txt xls xlsx csv bmp jpg jpeg png gif tiff mp3 mp4'),
-	       'file_validate_size' => array(25600000),
+	       'file_validate_size' => array(51200000),
 	     ),
 	];
 	$form['location'] = [
@@ -321,7 +321,7 @@ class FormmoduleForm extends FormBase {
 	  $form['milestone'][$i] = ['#markup' => '<div class="col-md-12 container right"><div class="content"><h6>'.$file->milestonedesc.'</h6><p>' . date('m / d / Y h:i:s A', strtotime($file->datetime)) . '</p><div class="body"><a href="'.$base_url.'/sites/default/files/items/'.$file->file.'" target="_blank">'.$file->file.'</a></div></div></div>'];
 	  if (!empty($file->latitude)) {
 	     $dispurl = Url::fromRoute('formmilestone_example_display', array('appmilestonepk' => $file->appmilestonepk));
-	     $url->setOptions($link_options);
+	     $dispurl->setOptions($link_options);
              $display_formmilestone = \Drupal::l(t($file->milestonedesc), $dispurl);
 	     $mark[] = ['latitude' => $file->latitude, 'longitude' => $file->longitude, 'content' => $display_formmilestone];
 	  }

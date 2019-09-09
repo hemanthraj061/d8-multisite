@@ -1,0 +1,5 @@
+name: Formdashboard
+type: module
+description: A module that define formdashboard operations.
+package: modules
+core: 8.x
