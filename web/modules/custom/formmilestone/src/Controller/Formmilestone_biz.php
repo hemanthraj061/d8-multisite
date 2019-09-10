@@ -23,7 +23,7 @@ Class Formmilestone_biz {
         $transaction = db_transaction();
 
         $insertid = db_insert('appmetadata')
-                ->milestone(array(
+                ->fields(array(
                     'apmdtype' => $values['apmdtype'],
                     'apmdlength' => $values['apmdlength'],
                     'apmddesc' => $values['apmddesc'],
@@ -50,7 +50,7 @@ Class Formmilestone_biz {
         $transaction = db_transaction();
 
         $update = db_update('appmetadata')
-                ->milestone(array(
+                ->fields(array(
                     'apmdtype' => $values['apmdtype'],
                     'apmdlength' => $values['apmdlength'],
                     'apmddesc' => $values['apmddesc'],

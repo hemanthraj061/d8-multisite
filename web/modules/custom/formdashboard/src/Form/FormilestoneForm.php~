@@ -1,0 +1,265 @@
+<?php
+
+namespace Drupal\formmilestone\Form;
+
+use Drupal\Core\Form\FormBase;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Url;
+use Drupal\Core\Link;
+use Drupal\customutil\CustomUtils;
+use Drupal\formmilestone\Controller\Formmilestone_biz;
+use Drupal\formmilestone\Controller\AutocompleteController;
+
+
+/**
+ * Form with examples on how to use cache.
+ */
+class FormmilestoneForm extends FormBase {
+
+    public $appmilestonepk;
+      
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFormId() {
+        return 'formmilestone_example_form';
+    }
+
+
+    public function buildForm(array $form, FormStateInterface $form_state, $formmode = '', $appmilestonepk = '') {
+
+        $this->appmilestonepk = $appmilestonepk;
+        $this->formmode = $formmode;
+        $display_mode = FALSE;
+        if ($this->formmode == 'DISPLAY') {
+
+            $this->display_mode = TRUE;
+        }
+
+        $formmilestonedet = Formmilestone_biz::getformmilestonedet($appmilestonepk);
+
+        $form['formtitle'] = [
+            '#markup' => '<i class="fa fa-gift"></i> &nbsp;Milestone Info',
+            '#prefix' => '<div class="kt-portlet__head"><div class="kt-portlet__head-label">',
+            '#suffix' => '</div></div>',
+        ];
+
+        $form['formbody'] = [
+            '#markup' => '<form role="form" class="kt-form">
+                        <div class="form-body">
+                        <div class="row">'
+        ];
+
+        if (!isset($this->display_mode)) {
+	$form['submitup'] = [
+            '#type' => 'submit',
+            '#value' => $this->t('Submit'),
+            '#prefix' => '<div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="col-md-6">',
+            '#suffix' => '</div>'
+        ];
+	}
+	else {
+	$edit_formmilestone = CustomUtils::addButton('formmilestone_example_edit', array('appmilestonepk' => $appmilestonepk), 'medium', 'Edit Milestone');
+
+        $form['buttons']['submitedit'] = [
+            '#markup' => $edit_formmilestone,
+            '#prefix' => '<div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="kt-portlet__head-toolbar">
+                                        <div class="kt-portlet__head-wrapper">
+                                            <div class="kt-portlet__head-actions">',
+            '#suffix' => '</div></div></div>&nbsp;&nbsp;',
+        ];
+	$add_formmilestone = CustomUtils::addButton('formmilestone_example.form', '', 'medium', 'Add Milestone');
+
+        $form['buttons']['submitadd'] = [
+            '#markup' => $add_formmilestone,
+            '#prefix' => '<div class="kt-portlet__head-toolbar">
+                                        <div class="kt-portlet__head-wrapper">
+                                            <div class="kt-portlet__head-actions">',
+            '#suffix' => '</div></div></div>&nbsp;&nbsp;',
+        ];
+	}
+        $link_options = array(
+            'attributes' => array(
+                'class' => array(
+                    'btn',
+                    'btn-danger',
+                ),
+            ),
+        );
+        $url = Url::fromRoute('formmilestone_example.list');
+        $url->setOptions($link_options);
+        $cancel_formmodulelink = \Drupal::l(t('Cancel'), $url);
+
+        $form['buttons']['cancel'] = [
+            '#markup' => $cancel_formmodulelink,
+            '#prefix' => '<div class="kt-portlet__head-toolbar">
+                                        <div class="kt-portlet__head-wrapper">
+                                            <div class="kt-portlet__head-actions">',
+            '#suffix' => isset($this->display_mode) ? '</div></div></div><div class="col-md-6"></div>' : '</div></div></div>',
+        ];
+        $form['milestonedesc'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Milestone Description'),
+            '#default_value' =>  ($form_state->getValue('milestonedesc') != false)? $form_state->getValue('milestonedesc') :$formmilestonedet['milestonedesc'],
+	    '#attributes' =>  isset($this->display_mode) ? ['readonly' => 'readonly', 'style' => 'background:#F2F3F8;'] : [], 
+            '#prefix' => '<div class="col-md-12">',
+            '#suffix' => '</div>'
+        ];
+	
+        
+	$form['apmddesc'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Field Desc'),
+            '#default_value' => ($form_state->getValue('apmddesc') != false) ? $form_state->getValue('apmddesc') : $formmilestonedet['apmddesc'],
+            '#attributes' =>  isset($this->display_mode) ? ['readonly' => 'readonly', 'style' => 'background:#F2F3F8;'] : [], 
+            '#prefix' => '<div class="col-md-6">',
+            '#suffix' => '</div>'
+        ];
+	
+        if (!isset($this->display_mode)) {
+	$form['submit'] = [
+            '#type' => 'submit',
+            '#value' => $this->t('Submit'),
+            '#prefix' => '<div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="col-md-6">',
+            '#suffix' => '</div>'
+        ];
+	}
+	else {
+	$edit_formmilestone = CustomUtils::addButton('formmilestone_example_edit', array('appmilestonepk' => $appmilestonepk), 'medium', 'Edit Milestone');
+
+        $form['actions']['submitedit'] = [
+            '#markup' => $edit_formmilestone,
+            '#prefix' => '<div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="kt-portlet__head-toolbar">
+                                        <div class="kt-portlet__head-wrapper">
+                                            <div class="kt-portlet__head-actions">',
+            '#suffix' => '</div></div></div>&nbsp;&nbsp;',
+        ];
+	$add_formmilestone = CustomUtils::addButton('formmilestone_example.form', '', 'medium', 'Add Milestone');
+
+        $form['actions']['submitadd'] = [
+            '#markup' => $add_formmilestone,
+            '#prefix' => '<div class="kt-portlet__head-toolbar">
+                                        <div class="kt-portlet__head-wrapper">
+                                            <div class="kt-portlet__head-actions">',
+            '#suffix' => '</div></div></div>&nbsp;&nbsp;',
+        ];
+	}
+        $url = Url::fromRoute('formmilestone_example.list');
+        $url->setOptions($link_options);
+        $cancel_formmodulelink = \Drupal::l(t('Cancel'), $url);
+
+        $form['actions']['cancel'] = [
+            '#markup' => $cancel_formmodulelink,
+            '#prefix' => '<div class="kt-portlet__head-toolbar">
+                                        <div class="kt-portlet__head-wrapper">
+                                            <div class="kt-portlet__head-actions">',
+            '#suffix' => '</div></div></div>',
+        ];
+        $form['formbodyend'] = [
+            '#markup' => '</form></div></div>'
+        ];
+
+
+        return $form;
+    }
+
+    public function validateForm(array &$form, FormStateInterface $form_state) {
+ 	/*if ($form_state->getValue('apmdname') == '') {
+            $form_state->setErrorByName('apmdname', $this->t('Please enter name'));
+        }
+
+        if ($form_state->getValue('apmdtype') == '') {
+            $form_state->setErrorByName('apmdtype', $this->t('Please enter type'));
+        }
+
+        if ($form_state->getValue('apmddesc') == '') {
+            $form_state->setErrorByName('apmddesc', $this->t('Please enter field description'));
+        }*/
+        
+//        $form_state->setRebuild();
+    }
+
+    public function fapiExampleMultistepFormNextSubmit(array &$form, FormStateInterface $form_state) {
+        $form_state->setRebuild();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function submitForm(array &$form, FormStateInterface $form_state) {
+
+        $appmilestonepk = $form_state->getValue('appmilestonepk');
+        // drupal_set_message(t('An error occurred and processing did not complete.'), 'error');
+
+
+        // $values = $form_state->getValues();
+
+        // $insertid = db_insert('tragformmilestone')
+        //         ->milestone(array(
+        //             'formmilestoneno' => $values['formmilestoneno'],
+        //             'formmilestonedate' => $values['formmilestonedate'],
+        //             'packdate' => $values['packdate'],
+        //             'usebydate' => $values['usebydate'],
+        //             'netweight' => $values['netweight'],
+        //             'packedweight' => $values['packedweight'],
+        //             'formmilestonetext' => $values['formmilestonetext'],
+        //             'productdesc' => $values['productcode'],
+        //         ))
+        //         ->execute();
+
+        // if ($insertid) {
+        //     $query = db_select('tragcustomtemplatemilestone', 'tempmilestone');
+        //     $query->milestone('tempmilestone', ['fcode', 'source']);
+        //     $query->condition('customtemplatepk', $customtemplatepk, '=');
+        //     $result = $query->execute()->fetchAll();
+        //     foreach ($result as $k => $val) {
+        //         $fcode = $values[$val->fcode];
+        //         $insertprod = db_insert('trproductinfo')
+        //                 ->milestone(array(
+        //                     'apmdgpk' => $insertid,
+        //                     'productpk' => 1, //$values['productcode'],
+        //                     'lablecode' => $val->fcode,
+        //                     'labledesc' => $fcode,
+        //                         // 'updatedby' => $values['formmilestonetext'],
+        //                 ))
+        //                 ->execute();
+        //     }
+        // }
+
+        // //$form_state->setRebuild();
+        // $form_state->setRedirect('formmilestone_example.list');
+
+       // $vals = $form_state->getValues();
+
+        switch ($this->formmode) {
+            case 'NEW':
+                $returnval = Formmilestone_biz::save_formmilestone($form, $form_state);
+                if ($returnval == 'FAIL') {                    
+                } else {
+                    drupal_set_message(t("Formmilestone details Saved Successfully"));
+                    $form_state->setRedirect('formmilestone_example_display', array('appmilestonepk' => $returnval));
+                }
+                break;
+            case 'EDIT':
+                $returnval = Formmilestone_biz::edit_formmilestone($form, $form_state, $this->appmilestonepk);
+                if ($returnval == 'FAIL') {
+                    
+                } else {
+                    drupal_set_message(t("Formmilestone Updated Successfully"));
+                    $form_state->setRedirect('formmilestone_example_display', array('appmilestonepk' => $this->appmilestonepk));
+                }
+                break;
+            default:
+                $form_state->setRedirect('formmilestone_example.list');
+                break;
+        }
+
+
+
+
+
+    }
+
+}

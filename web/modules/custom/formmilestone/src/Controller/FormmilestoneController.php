@@ -25,8 +25,6 @@ Class FormmilestoneController {
 
         $getlist = $query->execute();
        
-        $link_options = array('attributes' => array('class' => array('btn btn-xs default btn-editable'),),);
-        $link_options_delete = array('attributes' => array('class' => array('btn', 'btn-danger'),),);
         foreach ($getlist as $item) {
             $idarray = array('appmilestonepk' => $item->appmilestonepk);
             $delete_formmilestone = CustomUtils::deleteButton('formmilestone_example_delete', $idarray, 'extrasmall', 'Delete');

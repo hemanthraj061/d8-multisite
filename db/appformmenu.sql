@@ -1,0 +1,12 @@
+CREATE TABLE `appformmenu` (
+  `appformmenupk` int(11) NOT NULL AUTO_INCREMENT COMMENT 'appformmenupk',
+  `menuname` varchar(40) COMMENT 'menuname',
+  `formlist` json COMMENT 'formlist',
+  `createdby` int(11) DEFAULT NULL COMMENT 'System User name',
+  `createdtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updatedby` int(11) DEFAULT NULL COMMENT 'System User name',
+  `updatedtime` datetime DEFAULT NULL,
+  `tenant` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`appformmenupk`),
+  UNIQUE KEY `menuname` (`menuname`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

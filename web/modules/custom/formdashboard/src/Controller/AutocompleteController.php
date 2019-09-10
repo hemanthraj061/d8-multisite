@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\formfields\Controller;
+namespace Drupal\formdashboard\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Form\FormBase;

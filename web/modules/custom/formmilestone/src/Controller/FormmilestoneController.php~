@@ -35,7 +35,7 @@ Class FormmilestoneController {
 
             // Row with attributes on the row and some of its cells.
             $rows[] = array(
-                'data' => array($display_formmilestone, $delete_formmilestone)
+                'data' => array($display_formmilestone, $item->file, $delete_formmilestone)
             );
         }
 

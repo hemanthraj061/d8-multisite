@@ -12,13 +12,33 @@ Class FormdashboardController {
         
 
         $rows = array();
-        $query = db_select('appmdgroup', 'a');
+        $query = db_select('appformmenu', 'a');
         $query->fields('a');
         
         $getlist = $query->execute();
         global $base_url;
+	$i = 0;
 	foreach ($getlist as $item) {
-            $rows[] = '<div class="col-md-6"><img src="'.$base_url.'/modules/custom/formdashboard/forms.png">' . CustomUtils::editButton('formmodule_example.list', array('apmdgpk' => $item->apmdgpk), 'medium', $item->apmdgroupname) . '</div>';
+	    $collapse = str_replace(" ", "", $item->menuname);
+	    $str = '<div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle accordion-toggle-styled '.(($i > 0) ? "collapsed" : "" ).'" data-toggle="collapse" data-parent="#accordion2" href="#'.$collapse.'" aria-expanded="'.(($i > 0) ? "false" : "true" ).'"> '.$item->menuname.' </a>
+                                                    </h4>
+                                                </div>
+		<div id="'.$collapse.'" class="panel-collapse collapse '.(($i > 0) ? "" : "show" ).'" aria-expanded="'.(($i > 0) ? "false" : "true" ).'" style="height: 0px;"><div class="panel-body">
+                                                        <div class="row formconf">';
+	    $formlist = json_decode($item->formlist, TRUE);
+	    foreach ($formlist as $forms) {
+	    $qry = db_select('appmdgroup', 'a');
+            $qry->fields('a');
+            $qry->condition('a.apmdgroupid', $forms, '=');
+            $result = $qry->execute()->fetchAssoc();
+            $str .= '<div class="col-md-6"><img src="'.$base_url.'/modules/custom/formdashboard/forms.png">' . CustomUtils::editButton('formmodule_example.list', array('apmdgpk' => $result['apmdgpk']), 'medium', $result['apmdgroupname']) . '</div>';
+	    }
+	    $str .= '</div></div></div></div>';
+	    $rows[] = $str;
+	    $i++;
         }
 
         $form['tablebody'] = array(
@@ -43,11 +63,72 @@ Class FormdashboardController {
 
 
         $form['tablebody']['company_table'] = array(
-            '#markup' => '<div class="row formconf">' . implode("\t", $rows) . '</div>',
+            '#markup' => '<div class="panel-group accordion scrollable" id="accordion2">'. implode("\t", $rows) . '</div>',
         );
 
         $form['#attached']['library'][] = 'formdashboard/formdashboard';
 
+
+        return $form;
+    }
+    public function formmenulist() {
+
+        $header = array(
+            'menuname' => t('Menu Name'),
+            'formlist' => t('Form List'),
+            'delete' => t('Delete'),
+        );
+        
+
+        $rows = array();
+        $query = db_select('appformmenu', 'a');
+        $query->fields('a');
+        $query->orderBy('a.appformmenupk', 'DESC');
+
+        $getlist = $query->execute();
+       
+        foreach ($getlist as $item) {
+            $idarray = array('appformmenupk' => $item->appformmenupk);
+            $delete_formmilestone = CustomUtils::deleteButton('formdashboard_example_delete', $idarray, 'extrasmall', 'Delete');
+            $dispurl = Url::fromRoute('formdashboard_example_display', array('appformmenupk' => $item->appformmenupk));
+            $display_formmilestone = \Drupal::l(t($item->menuname), $dispurl);
+
+            // Row with attributes on the row and some of its cells.
+            $rows[] = array(
+                'data' => array($display_formmilestone, $item->formlist, $delete_formmilestone)
+            );
+        }
+
+        $form['tablebody'] = array(
+            '#markup' => '',
+            '#prefix' => '<div class="kt-portlet kt-portlet--mobile">',
+            '#suffix' => '</div>'
+        );
+
+        $form['tablebody']['table_heading'] = [
+            '#markup' => '<div class="kt-portlet__head-label">
+                                <span class="kt-portlet__head-icon">
+                                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                                </span>
+                                <h3 class="kt-portlet__head-title">
+                                    List of Form Menu
+                                </h3>
+                            </div>',
+            '#prefix' => '<div class="kt-portlet__head kt-portlet__head--lg">',
+            '#suffix' => '</div>'
+        ];
+
+        $form['tablebody']['company_table'] = array(
+            '#theme' => 'table',
+            '#header' => $header,
+            '#rows' => $rows,
+            '#attributes' => array(
+                'id' => 'kt_table_1',
+                'class' => "table table-striped- table-bordered table-hover"
+            ),
+            '#prefix' => '<div class="kt-portlet__body">',
+            '#suffix' => '</div>',
+        );
 
         return $form;
     }

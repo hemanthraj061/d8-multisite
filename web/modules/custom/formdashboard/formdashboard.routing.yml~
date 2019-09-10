@@ -1,58 +1,56 @@
 formfields_example.form:
-  path: '/formfields/new'
+  path: '/formdashboard/new'
   defaults:
-    _form: '\Drupal\formfields\Form\FormfieldsForm'
-    _title: 'New Form Field'
+    _form: '\Drupal\formdashboard\Form\FormdashboardForm'
+    _title: 'New Form Menu'
     formmode: 'NEW'
   requirements:
     _permission: 'access content'
-    
 
 formfields_example_edit: 
-  path: '/formfields/edit/{apmdpk}'
+  path: '/formdashboard/edit/{appformmenupk}'
   defaults: 
-    _form: '\Drupal\formfields\Form\FormfieldsForm'
-    _title: 'Edit Form Field'
+    _form: '\Drupal\formdashboard\Form\FormdashboardForm'
+    _title: 'Edit Form Menu'
     formmode: 'EDIT'
   requirements:  
-    _permission: 'access content'  
+    _permission: 'access content'
 
-formfields_example_display: 
-  path: '/formfields/display/{apmdpk}'
+formdashboard_example_display: 
+  path: '/formdashboard/display/{appformmenupk}'
   defaults: 
-    _form: '\Drupal\formfields\Form\FormfieldsForm'
-    _title: 'Display Form Field'
+    _form: '\Drupal\formdashboard\Form\FormdashboardForm'
+    _title: 'Display Form Menu'
     formmode: 'DISPLAY'
   requirements:  
     _permission: 'access content'  
 
-formfields_example_delete: 
-  path: '/formfields/delete/{apmdpk}'
+formdashboard_example_delete: 
+  path: '/formdashboard/delete/{appformmenupk}'
   defaults: 
-    _form: 'Drupal\formfields\Form\Deleteformfields'
-    _title: 'Delete Form Field'
+    _form: 'Drupal\formdashboard\Form\Deleteformdashboard'
+    _title: 'Delete Form Menu'
   requirements: 
-    _permission: 'access content'  
+    _permission: 'access content'
 
-formfields_example.autocomplete:
-  path: '/formfields-product-autocomplete'
+formdashboard_example.autocomplete:
+  path: '/formdashboard-module-autocomplete'
   defaults:
-    _controller: '\Drupal\formfields\Controller\AutocompleteController::productAutocomplete'
-    _format: json
-  requirements:
-    _access: 'TRUE'
-    
-formfields_example.renderform:
-  path: '/addnewformfields'
-  defaults:
-    _controller: '\Drupal\formfields\Controller\AutocompleteController::manageAction'
+    _controller: '\Drupal\formdashboard\Controller\AutocompleteController::formlistAutocomplete'
     _format: json
   requirements:
     _access: 'TRUE'
 
-formfields_example.list:
-  path: '/formfieldslist'
+formmenu_example.list:
+  path: '/formmenulist'
   defaults: 
-    _controller: '\Drupal\formfields\Controller\FormfieldsController::formfieldslist'
+    _controller: '\Drupal\formdashboard\Controller\FormdashboardController::formmenulist'
+  requirements: 
+    _access: 'TRUE'
+
+formdashboard_example.list:
+  path: '/formdashboard'
+  defaults: 
+    _controller: '\Drupal\formdashboard\Controller\FormdashboardController::formdashboard'
   requirements: 
     _access: 'TRUE'    

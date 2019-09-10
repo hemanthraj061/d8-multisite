@@ -1,3 +1,53 @@
+formdashboard_example.form:
+  path: '/formdashboard/new'
+  defaults:
+    _form: '\Drupal\formdashboard\Form\FormdashboardForm'
+    _title: 'New Form Menu'
+    formmode: 'NEW'
+  requirements:
+    _permission: 'access content'
+
+formdashboard_example_edit: 
+  path: '/formdashboard/edit/{appformmenupk}'
+  defaults: 
+    _form: '\Drupal\formdashboard\Form\FormdashboardForm'
+    _title: 'Edit Form Menu'
+    formmode: 'EDIT'
+  requirements:  
+    _permission: 'access content'
+
+formdashboard_example_display: 
+  path: '/formdashboard/display/{appformmenupk}'
+  defaults: 
+    _form: '\Drupal\formdashboard\Form\FormdashboardForm'
+    _title: 'Display Form Menu'
+    formmode: 'DISPLAY'
+  requirements:  
+    _permission: 'access content'  
+
+formdashboard_example_delete: 
+  path: '/formdashboard/delete/{appformmenupk}'
+  defaults: 
+    _form: 'Drupal\formdashboard\Form\Deleteformdashboard'
+    _title: 'Delete Form Menu'
+  requirements: 
+    _permission: 'access content'
+
+formdashboard_example.autocomplete:
+  path: '/formdashboard-module-autocomplete'
+  defaults:
+    _controller: '\Drupal\formdashboard\Controller\AutocompleteController::formlistAutocomplete'
+    _format: json
+  requirements:
+    _access: 'TRUE'
+
+formmenu_example.list:
+  path: '/formmenulist'
+  defaults: 
+    _controller: '\Drupal\formdashboard\Controller\FormdashboardController::formmenulist'
+  requirements: 
+    _access: 'TRUE'
+
 formdashboard_example.list:
   path: '/formdashboard'
   defaults: 
