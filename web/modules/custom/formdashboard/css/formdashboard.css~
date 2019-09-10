@@ -3,6 +3,8 @@
 }
 .formconf a {
     font-weight: 600;
+    width: 91%;
+    text-align: left;
 }
 .formconf .col-md-6 {
     border-bottom: 1px solid #ebedf2;
