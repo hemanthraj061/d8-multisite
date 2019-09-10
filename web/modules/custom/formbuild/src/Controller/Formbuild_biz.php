@@ -29,7 +29,8 @@ Class Formbuild_biz {
                     'apmdfields' => json_encode(explode(",", str_replace(" ", "", $values['apmdfields']))),
                     'aptablefields' => json_encode(explode(",", str_replace(" ", "", $values['aptablefields']))),
                     'apkeyfields' => json_encode(explode(",", str_replace(" ", "", $values['apkeyfields']))),
-		    'createdby' => \Drupal::currentUser()->id()
+		    'references' => $values['references'],
+                    'createdby' => \Drupal::currentUser()->id()
                 ))
                 ->execute();
 
@@ -56,7 +57,8 @@ Class Formbuild_biz {
                     'apmdfields' => json_encode(explode(",", str_replace(" ", "", $values['apmdfields']))),
                     'aptablefields' => json_encode(explode(",", str_replace(" ", "", $values['aptablefields']))),
                     'apkeyfields' => json_encode(explode(",", str_replace(" ", "", $values['apkeyfields']))),
-		    'updatedby' => \Drupal::currentUser()->id(),
+		    'references' => $values['references'],
+                    'updatedby' => \Drupal::currentUser()->id(),
                     'updatedtime' => date('Y-m-d H:i:s', time())
                 ))
                 ->condition('apmdgpk', $apmdgpk, '=')
