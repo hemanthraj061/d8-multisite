@@ -137,6 +137,22 @@ class FormfieldsForm extends FormBase {
             '#prefix' => '<div class="col-md-6">',
             '#suffix' => '</div>'
         ];
+	$form['rangelow'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Range Low'),
+            '#default_value' => ($form_state->getValue('rangelow') != false) ? $form_state->getValue('rangelow') : $formfieldsdet['rangelow'],
+            '#attributes' =>  isset($this->display_mode) ? ['readonly' => 'readonly', 'style' => 'background:#F2F3F8;'] : [], 
+            '#prefix' => '<div class="col-md-6">',
+            '#suffix' => '</div>'
+        ];
+	$form['rangehigh'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Range High'),
+            '#default_value' => ($form_state->getValue('rangehigh') != false) ? $form_state->getValue('rangehigh') : $formfieldsdet['rangehigh'],
+            '#attributes' =>  isset($this->display_mode) ? ['readonly' => 'readonly', 'style' => 'background:#F2F3F8;'] : [], 
+            '#prefix' => '<div class="col-md-6">',
+            '#suffix' => '</div>'
+        ];
 	$form['apmdoptions'] = [
             '#type' => 'textarea',
             '#title' => $this->t('Field Options'),

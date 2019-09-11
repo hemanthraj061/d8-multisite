@@ -29,6 +29,8 @@ Class Formfields_biz {
                     'apmddesc' => $values['apmddesc'],
                     'apmdname' => $values['apmdname'],
                     'apmdoptions' => $values['apmdoptions'],
+                    'rangelow' => $values['rangelow'],
+                    'rangehigh' => $values['rangehigh'],
                     'createdby' => \Drupal::currentUser()->id()
                 ))
                 ->execute();
@@ -56,6 +58,8 @@ Class Formfields_biz {
                     'apmddesc' => $values['apmddesc'],
                     'apmdname' => $values['apmdname'],
                     'apmdoptions' => $values['apmdoptions'],
+                    'rangelow' => $values['rangelow'],
+                    'rangehigh' => $values['rangehigh'],
                     'updatedby' => \Drupal::currentUser()->id(),
                     'updatedtime' => date('Y-m-d H:i:s', time())
                 ))

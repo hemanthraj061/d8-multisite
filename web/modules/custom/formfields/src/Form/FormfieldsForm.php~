@@ -137,6 +137,22 @@ class FormfieldsForm extends FormBase {
             '#prefix' => '<div class="col-md-6">',
             '#suffix' => '</div>'
         ];
+	$form['rangelow'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Range Low'),
+            '#default_value' => ($form_state->getValue('rangelow') != false) ? $form_state->getValue('rangelow') : $formfieldsdet['rangelow'],
+            '#attributes' =>  isset($this->display_mode) ? ['readonly' => 'readonly', 'style' => 'background:#F2F3F8;'] : [], 
+            '#prefix' => '<div class="col-md-6">',
+            '#suffix' => '</div>'
+        ];
+	$form['apmddesc'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Field Desc'),
+            '#default_value' => ($form_state->getValue('apmddesc') != false) ? $form_state->getValue('apmddesc') : $formfieldsdet['apmddesc'],
+            '#attributes' =>  isset($this->display_mode) ? ['readonly' => 'readonly', 'style' => 'background:#F2F3F8;'] : [], 
+            '#prefix' => '<div class="col-md-6">',
+            '#suffix' => '</div>'
+        ];
 	$form['apmdoptions'] = [
             '#type' => 'textarea',
             '#title' => $this->t('Field Options'),
@@ -150,7 +166,7 @@ class FormfieldsForm extends FormBase {
 	$form['submit'] = [
             '#type' => 'submit',
             '#value' => $this->t('Submit'),
-            '#prefix' => '<div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="col-md-6">',
+            '#prefix' => '<div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="col-md-6">',
             '#suffix' => '</div>'
         ];
 	}
@@ -159,7 +175,7 @@ class FormfieldsForm extends FormBase {
 
         $form['actions']['submitedit'] = [
             '#markup' => $edit_formfields,
-            '#prefix' => '<div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="kt-portlet__head-toolbar">
+            '#prefix' => '<div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="col-md-6">&nbsp;</div><div class="kt-portlet__head-toolbar">
                                         <div class="kt-portlet__head-wrapper">
                                             <div class="kt-portlet__head-actions">',
             '#suffix' => '</div></div></div>&nbsp;&nbsp;',
