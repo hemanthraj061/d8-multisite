@@ -181,7 +181,7 @@ class FormbuildForm extends FormBase {
             '#prefix' => '<div class="col-md-6">',
             '#suffix' => '</div>'
         ];
-	$options = ['SINGLE' => 'Single Column', 'TWO' => 'Two Column'];
+	$options = ['' => '', 'SINGLE' => 'Single Column', 'TWO' => 'Two Column'];
 	$form['layout'] = [
             '#type' => isset($this->display_mode) ? 'textfield' : 'select',
             '#title' => $this->t('Layout'),

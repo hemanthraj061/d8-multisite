@@ -106,7 +106,7 @@ class FormmoduleForm extends FormBase {
             '#suffix' => '</div></div></div></div>',
         ];
         $getfields = json_decode($result['apmdfields'], true);
-	$layout = json_decode($result['layout'], true);
+	$layout = $result['layout'];
 	$values = json_decode($formmoduledet['appgroupfields'],true);
 	if ($formmode == 'NEW') {
 	$form['tabscontent']['one']['productinfo1'] = $this->formmoduletab($getfields, $values, $form_state, $layout);
@@ -233,7 +233,7 @@ class FormmoduleForm extends FormBase {
         $form['#attached']['library'][] = 'formmodule/formmodulelib';
         return $form;
     }
-    public function formmoduletab($getfields, $values, $form_state, $layout = NULL) {
+    public function formmoduletab($getfields, $values, $form_state, $layout) {
 	$ftype = ['DATE' => 'date', 'CHAR' => 'textfield', 'AUTO' => 'textfield', 'SELECT' => 'select', 'FLOAT' => 'textfield', 'CHECK' => 'checkboxes', 'INT' => 'textfield', 'RADIO' => 'textfield', 'TEXT' => 'textarea'];
 	$i = 0;$j = 0;
 	$count = count($getfields) - 1;

@@ -185,7 +185,7 @@ class FormbuildForm extends FormBase {
 	$form['layout'] = [
             '#type' => isset($this->display_mode) ? 'textfield' : 'select',
             '#title' => $this->t('Layout'),
-            '#default_value' =>  ($form_state->getValue('layout') != false)? $form_state->getValue('layout') : $options[$formbuilddet['layout']],
+            '#default_value' =>  ($form_state->getValue('layout') != false)? $form_state->getValue('layout') : (isset($this->display_mode) ? $options[$formbuilddet['layout']] : $formbuilddet['layout']),
 	    '#options' => $options,
 	    '#attributes' =>  isset($this->display_mode) ? ['readonly' => 'readonly', 'style' => 'background:#F2F3F8;'] : [], 
             '#prefix' => '<div class="col-md-6">',
