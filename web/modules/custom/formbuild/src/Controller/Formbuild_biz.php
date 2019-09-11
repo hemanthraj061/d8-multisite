@@ -30,6 +30,7 @@ Class Formbuild_biz {
                     'aptablefields' => json_encode(explode(",", str_replace(" ", "", $values['aptablefields']))),
                     'apkeyfields' => json_encode(explode(",", str_replace(" ", "", $values['apkeyfields']))),
 		    'references' => $values['references'],
+                    'layout' => $values['layout'],
                     'createdby' => \Drupal::currentUser()->id()
                 ))
                 ->execute();
@@ -58,6 +59,7 @@ Class Formbuild_biz {
                     'aptablefields' => json_encode(explode(",", str_replace(" ", "", $values['aptablefields']))),
                     'apkeyfields' => json_encode(explode(",", str_replace(" ", "", $values['apkeyfields']))),
 		    'references' => $values['references'],
+                    'layout' => $values['layout'],
                     'updatedby' => \Drupal::currentUser()->id(),
                     'updatedtime' => date('Y-m-d H:i:s', time())
                 ))

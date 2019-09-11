@@ -139,7 +139,7 @@ class FormfieldsForm extends FormBase {
         ];
 	$form['rangelow'] = [
             '#type' => 'textfield',
-            '#title' => $this->t('Range Low'),
+            '#title' => $this->t('Field Range (Low)'),
             '#default_value' => ($form_state->getValue('rangelow') != false) ? $form_state->getValue('rangelow') : $formfieldsdet['rangelow'],
             '#attributes' =>  isset($this->display_mode) ? ['readonly' => 'readonly', 'style' => 'background:#F2F3F8;'] : [], 
             '#prefix' => '<div class="col-md-6">',
@@ -147,7 +147,7 @@ class FormfieldsForm extends FormBase {
         ];
 	$form['rangehigh'] = [
             '#type' => 'textfield',
-            '#title' => $this->t('Range High'),
+            '#title' => $this->t('Field Range (High)'),
             '#default_value' => ($form_state->getValue('rangehigh') != false) ? $form_state->getValue('rangehigh') : $formfieldsdet['rangehigh'],
             '#attributes' =>  isset($this->display_mode) ? ['readonly' => 'readonly', 'style' => 'background:#F2F3F8;'] : [], 
             '#prefix' => '<div class="col-md-6">',

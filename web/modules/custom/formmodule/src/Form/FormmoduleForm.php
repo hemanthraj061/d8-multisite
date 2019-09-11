@@ -106,9 +106,10 @@ class FormmoduleForm extends FormBase {
             '#suffix' => '</div></div></div></div>',
         ];
         $getfields = json_decode($result['apmdfields'], true);
+	$layout = json_decode($result['layout'], true);
 	$values = json_decode($formmoduledet['appgroupfields'],true);
 	if ($formmode == 'NEW') {
-	$form['tabscontent']['one']['productinfo1'] = $this->formmoduletab($getfields, $values, $form_state);
+	$form['tabscontent']['one']['productinfo1'] = $this->formmoduletab($getfields, $values, $form_state, $layout);
 	}
 	else {
 	$form['formcoverstart']['#markup'] = '<div class="kt-portlet">';
@@ -232,15 +233,13 @@ class FormmoduleForm extends FormBase {
         $form['#attached']['library'][] = 'formmodule/formmodulelib';
         return $form;
     }
-    public function formmoduletab($getfields, $values, $form_state) {
+    public function formmoduletab($getfields, $values, $form_state, $layout = NULL) {
 	$ftype = ['DATE' => 'date', 'CHAR' => 'textfield', 'AUTO' => 'textfield', 'SELECT' => 'select', 'FLOAT' => 'textfield', 'CHECK' => 'checkboxes', 'INT' => 'textfield', 'RADIO' => 'textfield', 'TEXT' => 'textarea'];
 	$i = 0;$j = 0;
 	$count = count($getfields) - 1;
 	foreach ($getfields as $fld) {
 	$desc = CustomUtils::getLabel($fld);
 	$type = db_query("SELECT apmdtype from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
-	//$apmdpk = db_query("SELECT apmdpk from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
-	//$aplandesc = db_query("SELECT aplandesc from {appmdlan} WHERE appmdpk = :apmdpk LIMIT 1", array(":apmdpk" => $apmdpk))->fetchField();
 	$options = json_decode(db_query("SELECT apmdoptions from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField(), true);
 	$hdesc = db_query("SELECT apmddesc from {appmetadata} WHERE apmdname = :apmdname AND apmdtype = 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
 	if (!empty($hdesc)) {
@@ -254,7 +253,7 @@ class FormmoduleForm extends FormBase {
             '#default_value' => ($form_state->getValue($fld) != false) ? $form_state->getValue($fld) : $values[$fld],
 	    '#attributes' =>  isset($this->display_mode) ? ['readonly' => 'readonly', 'style' => 'background:#F2F3F8;'] : [], 
 	   // '#description' => empty($aplandesc) ? '' : $this->t($aplandesc),
-            '#prefix' => ($i == 0) ? '<div class="row"><div class="col-md-6">' : '<div class="col-md-6">',
+            '#prefix' => ($i == 0) ? '<div class="'.(($layout == 'TWO') ? "row" : "fullwidth").'"><div class="col-md-6">' : '<div class="col-md-6">',
             '#suffix' => ($i == $count) ? '</div></div>' : '</div>'
         ];
 	if ($type == 'DATE') {

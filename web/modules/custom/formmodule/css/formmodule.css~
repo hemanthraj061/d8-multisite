@@ -14,7 +14,7 @@ summary {
 }
 #formmodule-example-form .description::before {content: '\A'; white-space: pre;}
 
-#ajax-wrapper, #kt_tabs_2_2 .row div:nth-child(1) {
+#ajax-wrapper, #kt_tabs_2_2 .row div:nth-child(2) {
    width: 100%;
    margin-left: 11px;
 }
