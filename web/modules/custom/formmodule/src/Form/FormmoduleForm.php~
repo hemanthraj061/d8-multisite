@@ -106,10 +106,9 @@ class FormmoduleForm extends FormBase {
             '#suffix' => '</div></div></div></div>',
         ];
         $getfields = json_decode($result['apmdfields'], true);
-	$layout = json_decode($result['layout'], true);
 	$values = json_decode($formmoduledet['appgroupfields'],true);
 	if ($formmode == 'NEW') {
-	$form['tabscontent']['one']['productinfo1'] = $this->formmoduletab($getfields, $values, $form_state, $layout);
+	$form['tabscontent']['one']['productinfo1'] = $this->formmoduletab($getfields, $values, $form_state, $result['layout']);
 	}
 	else {
 	$form['formcoverstart']['#markup'] = '<div class="kt-portlet">';
@@ -160,7 +159,7 @@ class FormmoduleForm extends FormBase {
         ];
 	}
 
-        $form['tabscontent']['one']['productinfo1'] = $this->formmoduletab($getfields, $values, $form_state);
+        $form['tabscontent']['one']['productinfo1'] = $this->formmoduletab($getfields, $values, $form_state, $result['layout']);
         $form['tabscontent']['two']['productinfo2'] = $this->milestonetab($formmilestone, $apmdgpk, $appformpk);
         if (isset($this->display_mode)) {
         $form['tabscontent']['three']['productinfo3'] = $this->maptab($formmilestone, $apmdgpk, $appformpk);
