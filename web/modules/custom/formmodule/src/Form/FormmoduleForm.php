@@ -107,8 +107,9 @@ class FormmoduleForm extends FormBase {
         ];
         $getfields = json_decode($result['apmdfields'], true);
 	$values = json_decode($formmoduledet['appgroupfields'],true);
+	$references = json_decode($result['references'],true);
 	if ($formmode == 'NEW') {
-	$form['tabscontent']['one']['productinfo1'] = $this->formmoduletab($getfields, $values, $form_state, $result['layout']);
+	$form['tabscontent']['one']['productinfo1'] = $this->formmoduletab($getfields, $values, $form_state, $result['layout'], $references);
 	}
 	else {
 	$form['formcoverstart']['#markup'] = '<div class="kt-portlet">';
@@ -159,7 +160,7 @@ class FormmoduleForm extends FormBase {
         ];
 	}
 
-        $form['tabscontent']['one']['productinfo1'] = $this->formmoduletab($getfields, $values, $form_state, $result['layout']);
+        $form['tabscontent']['one']['productinfo1'] = $this->formmoduletab($getfields, $values, $form_state, $result['layout'], $references);
         $form['tabscontent']['two']['productinfo2'] = $this->milestonetab($formmilestone, $apmdgpk, $appformpk);
         if (isset($this->display_mode)) {
         $form['tabscontent']['three']['productinfo3'] = $this->maptab($formmilestone, $apmdgpk, $appformpk);
@@ -232,11 +233,18 @@ class FormmoduleForm extends FormBase {
         $form['#attached']['library'][] = 'formmodule/formmodulelib';
         return $form;
     }
-    public function formmoduletab($getfields, $values, $form_state, $layout = NULL) {
+    public function formmoduletab($getfields, $values, $form_state, $layout = NULL, $references = NULL) {
 	$ftype = ['DATE' => 'date', 'CHAR' => 'textfield', 'AUTO' => 'textfield', 'SELECT' => 'select', 'FLOAT' => 'textfield', 'CHECK' => 'checkboxes', 'INT' => 'textfield', 'RADIO' => 'textfield', 'TEXT' => 'textarea'];
 	$i = 0;$j = 0;
 	$count = count($getfields) - 1;
-	foreach ($getfields as $fld) {
+	$modulelist = array_keys($references);
+	foreach ($modulelist as $module) {
+	$query = db_select('appform', 'a');
+	$query->join('appmdgroup', 'b', "b.apmdgroupname = a.appgroupname AND b.apmdgroupid = '$module'");
+        $query->fields('a', ['appgroupfields']);
+        $option[$references[$module][0]] = json_decode($query->execute()->fetchAssoc()['appgroupfields'], true)[$references[$module][1]];
+	}
+        foreach ($getfields as $fld) {
 	$desc = CustomUtils::getLabel($fld);
 	$type = db_query("SELECT apmdtype from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
 	$options = json_decode(db_query("SELECT apmdoptions from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField(), true);
@@ -261,7 +269,7 @@ class FormmoduleForm extends FormBase {
 	}
 	if ($type == 'SELECT' || $type == 'RADIO' || $type == 'CHECK') {
 	  if (isset($this->display_mode)) $form['h'. $j][$fld]['#disabled'] = TRUE;
-	  $form['h'. $j][$fld]['#options'] = $options;
+	  $form['h'. $j][$fld]['#options'] = !empty($option[$fld]) ? [$option[$fld]] : $options;
 	}
 	}
 	if (empty($hdesc)) $i++;
