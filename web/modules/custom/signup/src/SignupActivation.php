@@ -60,7 +60,7 @@ class SignupActivation extends FormBase {
 
             $createuser = \Drupal::database()->query("Create user " . $mysqluser . "  identified by '" . $pass . "'");
             if($createuser){
-                  $grantperm = \Drupal::database()->query( "Grant select, insert, update, delete, execute, trigger on " . $database . ".* to '" . $mysqluser . "'");
+                  $grantperm = \Drupal::database()->query( "Grant select, insert, update, delete, execute, trigger on trackplus.* to '" . $mysqluser . "'");
                   if($grantperm){
 
                             $tenantpk = db_insert('tfrttenant')

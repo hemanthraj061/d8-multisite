@@ -36,7 +36,39 @@ Class Signup extends FormBase {
     }
 
     public function buildForm(array $form, FormStateInterface $form_state) {
+//require_once '/var/www/html/d8-multisite/vendor/autoload.php';
+// require_once('/var/www/html/d8-multisite/vendor/swiftmailer/swiftmailer/lib/swift_required.php');
 
+ /*  ----Working code    
+
+    // Create the Transport
+    $transport = \Swift_SmtpTransport::newInstance('mail.dreamhost.com', 587)
+      ->setUsername('akshay.a@aroha.co.in')
+      ->setPassword('Aroha@2019')
+      ;
+
+    // Create the Mailer using your created Transport
+    $mailer = \Swift_Mailer::newInstance($transport);
+
+    // Create a message
+    $message = \Swift_Message::newInstance('Wonderful Subject')
+      ->setFrom(array('akshay.a@aroha.co.in' => 'John Doe'))
+      ->setTo(array('hemanthraj061@gmail.com', 'hemanthraj2009@gmail.com' => 'A name'))
+      ->setBody('Here is the message itself')
+      ;
+
+    // Send the message
+    $result = $mailer->send($message);
+
+if($result){
+echo "sent";
+}else{
+echo "failed";
+}
+
+
+die();
+*/
         $config = \Drupal::config('drizzle.settings');
 // Will print 'Hello'.
 // print $config->get('text_val');
@@ -186,6 +218,9 @@ $mailid2 = db_select('tfrttenantuser', 'tuser')
         //DbTransaction
         $transaction = db_transaction();
 
+	    $rb;
+
+
         $signuppk = db_insert('tfrtsignup')
                 ->fields(array(
                     'firstname' =>  $values['username'],
@@ -196,6 +231,7 @@ $mailid2 = db_select('tfrttenantuser', 'tuser')
                     'mailurl' => md5($values['email'] . $values['username']),
                 ))
                 ->execute();
+
         if (!$signuppk) {
             $rb = 'YES';
         }
@@ -230,11 +266,13 @@ $mailid2 = db_select('tfrttenantuser', 'tuser')
 
        $language_code = $this->languageManager->getDefaultLanguage()->getId();
 
+
        $send_now = TRUE;
        // Send the mail, and check for success. Note that this does not guarantee
        // message delivery; only that there were no PHP-related issues encountered
        // while sending.
        $result = $this->mailManager->mail($module, $key, $to, $language_code, $params, $from, $send_now);
+
 
        if ($result['result'] == TRUE) {
            $this->messenger()->addMessage(t('Signup is success full. To activate your account please check your mail'));
@@ -242,5 +280,5 @@ $mailid2 = db_select('tfrttenantuser', 'tuser')
            $this->messenger()->addMessage(t('There was a problem sending your mail and it was not sent.'), 'error');
        }
     }
-
+//die();
 }

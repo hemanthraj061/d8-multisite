@@ -49,12 +49,12 @@ class UserLoginSubscriber implements EventSubscriberInterface {
        $database = array(
             'database' => 'trackplus',
             'username' => 'root',
-            'password' => 'mysql123',
+            'password' => 'root',
             'prefix' => '',
             'host' => $config->get('dbconnection.host'),
             'port' => $config->get('dbconnection.port'),
             'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
-            'driver' => $config->get('dbconnection.driver'),
+            'driver' => 'mysql'
         );
         \Drupal\Core\Database\Database::addConnectionInfo($key, 'default', $database);
 
