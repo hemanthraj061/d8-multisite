@@ -1,1 +1,1 @@
-ALTER TABLE `appmdgroup` CHANGE COLUMN `singleline` `layout` VARCHAR(10) NULL DEFAULT NULL  ;
+ALTER TABLE `appmdgroup` ADD COLUMN `layout` VARCHAR(10) NULL COMMENT 'Floor Plan' AFTER `apkeyfields`;

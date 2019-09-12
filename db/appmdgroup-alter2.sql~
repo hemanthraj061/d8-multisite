@@ -1,0 +1,1 @@
+ALTER TABLE `appmdgroup` ADD COLUMN `layout` VARCHAR(10) NULL  AFTER `apkeyfields` COMMENT 'Floor Plan';
