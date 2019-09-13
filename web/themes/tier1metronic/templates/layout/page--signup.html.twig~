@@ -57,10 +57,8 @@
 	display: none;
     }
     body {
-	background: url({{base_path}}/themes/tier1metronic/resource-bg.jpg);
+	background: url({{front_page}}/themes/tier1metronic/resource-bg.jpg);
     }
-    #user-login-form {width:354px;}
-    #user-login-form .form-required::after {background-image: none;}
     .kt-aside__brand-logo {
 	text-align: center;
     }
