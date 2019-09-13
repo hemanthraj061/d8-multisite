@@ -24,7 +24,7 @@ Class ForminspectionController {
 
         $rows = array();
         // $getlist=Product_Biz::getproductlist();
-        $query = db_select('appinspectionform', 'a');
+        $query = db_select('xappinspectionform', 'a');
         $query->fields('a');
       
 

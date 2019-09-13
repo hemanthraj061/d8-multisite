@@ -19,7 +19,7 @@ Class FormmilestoneController {
 
         $rows = array();
         // $getlist=Product_Biz::getproductlist();
-        $query = db_select('appmilestone', 'a');
+        $query = db_select('xappmilestone', 'a');
         $query->fields('a');
         $query->orderBy('a.appmilestonepk', 'ASC');
 

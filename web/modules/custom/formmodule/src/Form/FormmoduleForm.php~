@@ -235,7 +235,7 @@ class FormmoduleForm extends FormBase {
     }
     public function formmoduletab($getfields, $values, $form_state, $layout = NULL, $references = NULL) {
 	$ftype = ['DATE' => 'date', 'CHAR' => 'textfield', 'AUTO' => 'textfield', 'SELECT' => 'select', 'FLOAT' => 'textfield', 'CHECK' => 'checkboxes', 'INT' => 'textfield', 'RADIO' => 'textfield', 'TEXT' => 'textarea'];
-	$i = 0;$j = 0;drupal_set_message(print_r($references, true));
+	$i = 0;$j = 0;
 	$count = count($getfields) - 1;
 	$modulelist = array_keys($references);
 	foreach ($modulelist as $module) {
@@ -243,7 +243,7 @@ class FormmoduleForm extends FormBase {
 	$query->join('appmdgroup', 'b', "b.apmdgroupname = a.appgroupname AND b.apmdgroupid = '$module'");
         $query->fields('a', ['appgroupfields']);
         $option[$references[$module][0]] = json_decode($query->execute()->fetchAssoc()['appgroupfields'], true)[$references[$module][1]];
-	}drupal_set_message(print_r($option, true));
+	}
         foreach ($getfields as $fld) {
 	$desc = CustomUtils::getLabel($fld);
 	$type = db_query("SELECT apmdtype from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
@@ -266,10 +266,11 @@ class FormmoduleForm extends FormBase {
 	if ($type == 'DATE') {
 	  //$form['h'. $j][$fld]['#date_date_format'] = 'm / d / Y'; 
 	  $form['h'. $j][$fld]['#default_value'] = !empty($values[$fld]) ? date('Y-m-d', strtotime($values[$fld])) : date('Y-m-d');
+	  unset($form['h'. $j][$fld]['#attributes']);
 	}
 	if ($type == 'SELECT' || $type == 'RADIO' || $type == 'CHECK') {
 	  if (isset($this->display_mode)) $form['h'. $j][$fld]['#disabled'] = TRUE;
-	  $form['h'. $j][$fld]['#options'] = !empty($option[$fld]) ? [$option[$fld]] : $options;drupal_set_message(print_r($option[$fld], true));
+	  $form['h'. $j][$fld]['#options'] = !empty($option[$fld]) ? [$option[$fld]] : $options;
 	}
 	}
 	if (empty($hdesc)) $i++;

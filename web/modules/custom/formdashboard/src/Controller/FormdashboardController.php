@@ -12,7 +12,7 @@ Class FormdashboardController {
         
 
         $rows = array();
-        $query = db_select('appformmenu', 'a');
+        $query = db_select('xappformmenu', 'a');
         $query->fields('a');
         
         $getlist = $query->execute();
@@ -81,7 +81,7 @@ Class FormdashboardController {
         
 
         $rows = array();
-        $query = db_select('appformmenu', 'a');
+        $query = db_select('xappformmenu', 'a');
         $query->fields('a');
         $query->orderBy('a.appformmenupk', 'DESC');
 

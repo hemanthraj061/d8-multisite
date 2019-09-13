@@ -13,6 +13,7 @@ Class FormbuildController {
         $header = array(
             'apmdgpk' => t('ID'),
             'apmdgroupname' => t('Form Template Name'),
+            'goto' => t('GoTo'),
             'operations' => t('Edit'),
             'deletecomp' => t('Delete'),
         );

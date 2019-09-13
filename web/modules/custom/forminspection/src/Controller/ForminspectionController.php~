@@ -13,8 +13,8 @@ Class ForminspectionController {
         $header = array(
             'appinspformid' => t('Inspection ID'),
             'appinspformname' => t('Form Name'),
-            'appinspauditor' => t('Auditee User'),
-            'appinspauditee' => t('Audited User'),
+            'appinspauditor' => t('Auditor'),
+            'appinspauditee' => t('Auditee'),
             'appauditdate' => t('Audit Date'),
             'appinspstatus' => t('GoTo'),
             'operations' => t('Edit'),

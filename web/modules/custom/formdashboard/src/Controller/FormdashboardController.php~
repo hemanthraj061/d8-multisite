@@ -81,7 +81,7 @@ Class FormdashboardController {
         
 
         $rows = array();
-        $query = db_select('appformmenu', 'a');
+        $query = db_select('xappformmenu', 'a');
         $query->fields('a');
         $query->orderBy('a.appformmenupk', 'DESC');
 
@@ -111,7 +111,7 @@ Class FormdashboardController {
                                     <i class="kt-font-brand flaticon2-line-chart"></i>
                                 </span>
                                 <h3 class="kt-portlet__head-title">
-                                    List of Milestone
+                                    List of Form Menu
                                 </h3>
                             </div>',
             '#prefix' => '<div class="kt-portlet__head kt-portlet__head--lg">',

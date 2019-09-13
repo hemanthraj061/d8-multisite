@@ -25,7 +25,7 @@ Class FormmoduleController {
         
         $rows = array();
         // $getlist=Product_Biz::getproductlist();
-        $query = db_select('appform', 'a');
+        $query = db_select('xappform', 'a');
         $query->fields('a');
         $query->condition('appformid', $apmdgpk, '=');
         

@@ -22,7 +22,7 @@ Class FormfieldsController {
 
         $rows = array();
         // $getlist=Product_Biz::getproductlist();
-        $query = db_select('appmetadata', 'a');
+        $query = db_select('xappmetadata', 'a');
         $query->fields('a');
         $query->orderBy('a.apmdname', 'ASC');
 

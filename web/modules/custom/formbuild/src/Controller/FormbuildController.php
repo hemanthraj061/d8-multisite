@@ -21,7 +21,7 @@ Class FormbuildController {
 
         $rows = array();
         // $getlist=Product_Biz::getproductlist();
-        $query = db_select('appmdgroup', 'a');
+        $query = db_select('xappmdgroup', 'a');
         $query->fields('a');
       
 

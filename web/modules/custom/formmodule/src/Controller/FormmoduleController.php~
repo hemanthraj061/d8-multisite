@@ -36,7 +36,6 @@ Class FormmoduleController {
 
         $link_options = array('attributes' => array('class' => array('btn btn-xs default btn-editable'),),);
         $link_options_delete = array('attributes' => array('class' => array('btn', 'btn-danger'),),);
-drupal_set_message(print_r($getlist,true));
         foreach ($getlist as $item) {
 	    $r = json_decode($item->appgroupfields, true);
 	    foreach ($r as $key => $value) {

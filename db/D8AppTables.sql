@@ -21,9 +21,8 @@ CREATE TABLE `appmetadata` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
 
 CREATE
-DEFINER=`root`@`localhost`
-TRIGGER `trackplus`.`appmetadata_BEFORE_INSERT`
-BEFORE INSERT ON `trackplus`.`appmetadata`
+TRIGGER `appmetadata_BEFORE_INSERT`
+BEFORE INSERT ON `appmetadata`
 FOR EACH ROW
 BEGIN
 set new.tenant = SUBSTRING_INDEX(USER(),'@',1);

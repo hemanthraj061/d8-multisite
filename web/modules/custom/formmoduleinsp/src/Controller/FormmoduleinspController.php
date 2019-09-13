@@ -110,7 +110,7 @@ Class FormmoduleinspController {
     function inspectiontab($appinspformpk, $appstatus, $header) {
 	$rows = array();
         // $getlist=Product_Biz::getproductlist();
-        $query = db_select('appinspectionform', 'a');
+        $query = db_select('xappinspectionform', 'a');
 	$query->join('appinspectiondtl', 'b', 'b.appinspformpk = a.appinspformpk');
         $query->fields('a');
         $query->fields('b');
