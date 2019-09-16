@@ -9,7 +9,8 @@
         "swiftmailer/swiftmailer": "^6.2",
         "true/punycode": "~2.0",
         "egulias/email-validator": "^2.1",
-        "drupal/commerce_stripe": "~1.0"
+        "drupal/commerce_stripe": "~1.0",
+        "drupal/videojs": "^1.0"
     },
     "replace": {
         "drupal/core": "^8.7"
