@@ -392,6 +392,7 @@ class FormmoduleForm extends FormBase {
                 $returnval = Formmodule_biz::save_formmodule($form, $form_state, $this->apmdgpk, $this->apmdgroupname);
                 if ($returnval == 'FAIL') {                    
                 } else {
+                    drupal_flush_all_caches();
                     drupal_set_message(t("Formmodule Saved Successfully"));
                     $form_state->setRedirect('formmodule_example_display', array('apmdgpk' => $this->apmdgpk, 'appformpk' => $returnval));
                 }
@@ -401,6 +402,7 @@ class FormmoduleForm extends FormBase {
                 if ($returnval == 'FAIL') {
                     
                 } else {
+                    drupal_flush_all_caches();
                     drupal_set_message(t("Formmodule Updated Successfully"));
                     $form_state->setRedirect('formmodule_example_display', array('apmdgpk' => $this->apmdgpk, 'appformpk' => $this->appformpk));
                 }

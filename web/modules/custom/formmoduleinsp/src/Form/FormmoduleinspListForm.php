@@ -411,6 +411,7 @@ class FormmoduleinspListForm extends FormBase {
                 $returnval = Formmoduleinsp_biz::save_formmoduleinsp($form, $form_state, $this->appinspformpk, $this->apmdgroupname);
                 if ($returnval == 'FAIL') {                    
                 } else {
+                    drupal_flush_all_caches();
                     drupal_set_message(t("Formmoduleinsp Saved Successfully"));
                 //    $form_state->setRedirect('formmoduleinsp_example_display', array('appinspformpk' => $this->appinspformpk, 'appinspdtlpk' => $returnval));
                 }
@@ -420,6 +421,7 @@ class FormmoduleinspListForm extends FormBase {
                 if ($returnval == 'FAIL') {
                     
                 } else {
+                    drupal_flush_all_caches();
                     drupal_set_message(t($this->appinspformname. " Form Updated Successfully"));
                 //    $form_state->setRedirect('formmoduleinsp_example_display', array('appinspformpk' => $this->appinspformpk, 'appinspdtlpk' => $this->appinspdtlpk));
                 }

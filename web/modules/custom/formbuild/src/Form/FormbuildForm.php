@@ -324,6 +324,7 @@ class FormbuildForm extends FormBase {
                 $returnval = Formbuild_biz::save_formbuild($form, $form_state);
                 if ($returnval == 'FAIL') {                    
                 } else {
+                    drupal_flush_all_caches();
                     drupal_set_message(t("Form Template Saved Successfully"));
                     $form_state->setRedirect('formbuild_example_display', array('apmdgpk' => $returnval));
                 }
@@ -333,6 +334,7 @@ class FormbuildForm extends FormBase {
                 if ($returnval == 'FAIL') {
                     
                 } else {
+                    drupal_flush_all_caches();
                     drupal_set_message(t("Form Template Updated Successfully"));
                     $form_state->setRedirect('formbuild_example_display', array('apmdgpk' => $this->apmdgpk));
                 }

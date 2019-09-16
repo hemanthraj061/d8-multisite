@@ -481,6 +481,7 @@ class ForminspectionForm extends FormBase {
                 $returnval = Forminspection_biz::save_forminspection($form, $form_state);
                 if ($returnval == 'FAIL') {                    
                 } else {
+                    drupal_flush_all_caches();
                     drupal_set_message(t("Form Inspection Saved Successfully"));
                     $form_state->setRedirect('forminspection_example_display', array('appinspformpk' => $returnval));
                 }
@@ -490,6 +491,7 @@ class ForminspectionForm extends FormBase {
                 if ($returnval == 'FAIL') {
                     
                 } else {
+                    drupal_flush_all_caches();
                     drupal_set_message(t("Form Inspection Updated Successfully"));
                     $form_state->setRedirect('forminspection_example_display', array('appinspformpk' => $this->appinspformpk));
                 }

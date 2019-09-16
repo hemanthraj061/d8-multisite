@@ -282,6 +282,7 @@ class FormfieldsForm extends FormBase {
                 $returnval = Formfields_biz::save_formfields($form, $form_state);
                 if ($returnval == 'FAIL') {                    
                 } else {
+                    drupal_flush_all_caches();
                     drupal_set_message(t("Formfields details Saved Successfully"));
                     $form_state->setRedirect('formfields_example_display', array('apmdpk' => $returnval));
                 }
@@ -291,6 +292,7 @@ class FormfieldsForm extends FormBase {
                 if ($returnval == 'FAIL') {
                     
                 } else {
+                    drupal_flush_all_caches();
                     drupal_set_message(t("Formfields Updated Successfully"));
                     $form_state->setRedirect('formfields_example_display', array('apmdpk' => $this->apmdpk));
                 }
