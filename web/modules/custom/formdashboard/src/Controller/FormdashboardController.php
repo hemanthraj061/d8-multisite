@@ -89,13 +89,14 @@ Class FormdashboardController {
        
         foreach ($getlist as $item) {
             $idarray = array('appformmenupk' => $item->appformmenupk);
+            $edit_formmilestone = CustomUtils::deleteButton('formdashboard_example_edit', $idarray, 'extrasmall', 'Edit');
             $delete_formmilestone = CustomUtils::deleteButton('formdashboard_example_delete', $idarray, 'extrasmall', 'Delete');
             $dispurl = Url::fromRoute('formdashboard_example_display', array('appformmenupk' => $item->appformmenupk));
             $display_formmilestone = \Drupal::l(t($item->menuname), $dispurl);
 
             // Row with attributes on the row and some of its cells.
             $rows[] = array(
-                'data' => array($display_formmilestone, $item->formlist, $delete_formmilestone)
+                'data' => array($display_formmilestone, $item->formlist,$edit_formmilestone, $delete_formmilestone)
             );
         }
 

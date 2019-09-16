@@ -196,6 +196,7 @@ class FormdashboardForm extends FormBase {
                 $returnval = Formdashboard_biz::save_formdashboard($form, $form_state);
                 if ($returnval == 'FAIL') {                    
                 } else {
+                    drupal_flush_all_caches();
                     drupal_set_message(t("Formmenu details Saved Successfully"));
                     $form_state->setRedirect('formdashboard_example_display', array('appformmenupk' => $returnval));
                 }
@@ -205,6 +206,7 @@ class FormdashboardForm extends FormBase {
                 if ($returnval == 'FAIL') {
                     
                 } else {
+                    drupal_flush_all_caches();
                     drupal_set_message(t("Formmenu Updated Successfully"));
                     $form_state->setRedirect('formdashboard_example_display', array('appformmenupk' => $this->appformmenupk));
                 }
