@@ -29,7 +29,9 @@ summary {
    padding-top: 0;
    white-space: nowrap;
 }
-
+.fullwidth {
+   width: 100%;
+}
   .timeline {
     position: relative;
     margin: 0 auto;

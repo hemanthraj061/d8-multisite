@@ -235,14 +235,18 @@ class FormmoduleForm extends FormBase {
     }
     public function formmoduletab($getfields, $values, $form_state, $layout = NULL, $references = NULL) {
 	$ftype = ['DATE' => 'date', 'CHAR' => 'textfield', 'AUTO' => 'textfield', 'SELECT' => 'select', 'FLOAT' => 'textfield', 'CHECK' => 'checkboxes', 'INT' => 'textfield', 'RADIO' => 'textfield', 'TEXT' => 'textarea'];
-	$i = 0;$j = 0;
+	$i = 0;$j = 0;$k = 0;
 	$count = count($getfields) - 1;
 	$modulelist = array_keys($references);
 	foreach ($modulelist as $module) {
 	$query = db_select('appform', 'a');
 	$query->join('appmdgroup', 'b', "b.apmdgroupname = a.appgroupname AND b.apmdgroupid = '$module'");
         $query->fields('a', ['appgroupfields']);
-        $option[$references[$module][0]] = json_decode($query->execute()->fetchAssoc()['appgroupfields'], true)[$references[$module][1]];
+	$getlist = $query->execute();
+	foreach ($getlist as $item) {
+	    $opt[] = json_decode($item->appgroupfields, true)[$references[$module][1]];
+	}
+        $option[$references[$module][0]] = $opt;
 	}
         foreach ($getfields as $fld) {
 	$desc = CustomUtils::getLabel($fld);
@@ -250,7 +254,7 @@ class FormmoduleForm extends FormBase {
 	$options = json_decode(db_query("SELECT apmdoptions from {appmetadata} WHERE apmdname = :apmdname AND apmdtype <> 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField(), true);
 	$hdesc = db_query("SELECT apmddesc from {appmetadata} WHERE apmdname = :apmdname AND apmdtype = 'HEAD' LIMIT 1", array(":apmdname" => $fld))->fetchField();
 	if (!empty($hdesc)) {
-	   $j++;
+	   $j++;$k = 0;
 	   $form['h'. $j] = ['#type' => 'details', '#title' => $this->t($desc), '#open' => ($j == 1) ? TRUE : FALSE];
 	}
 	else {
@@ -260,7 +264,7 @@ class FormmoduleForm extends FormBase {
             '#default_value' => ($form_state->getValue($fld) != false) ? $form_state->getValue($fld) : $values[$fld],
 	    '#attributes' =>  isset($this->display_mode) ? ['readonly' => 'readonly', 'style' => 'background:#F2F3F8;'] : [], 
 	   // '#description' => empty($aplandesc) ? '' : $this->t($aplandesc),
-            '#prefix' => ($i == 0) ? '<div class="'.(($layout == 'TWO') ? "row" : "fullwidth").'"><div class="col-md-6">' : '<div class="col-md-6">',
+            '#prefix' => ($i == 0 || $k == 0) ? '<div class="'.(($layout == 'TWO') ? "row" : "fullwidth").'"><div class="col-md-6">' : '<div class="col-md-6">',
             '#suffix' => ($i == $count) ? '</div></div>' : '</div>'
         ];
 	if ($type == 'DATE') {
@@ -272,7 +276,7 @@ class FormmoduleForm extends FormBase {
 	  $form['h'. $j][$fld]['#options'] = !empty($option[$fld]) ? [$option[$fld]] : $options;
 	}
 	}
-	if (empty($hdesc)) $i++;
+	if (empty($hdesc)) {$i++;$k++;}
 	}
 	return $form;
     }

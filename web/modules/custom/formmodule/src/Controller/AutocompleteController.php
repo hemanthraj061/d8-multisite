@@ -22,14 +22,16 @@ class AutocompleteController extends ControllerBase {
     public function moduleAutocomplete(Request $request) {
         $matches = array();
         $string = $request->query->get('q');
-        $result = db_select('frtproduct', 'n')
-                ->fields('n', array('productdesc', 'productpk'))
-                ->condition('productdesc', '%' . db_like($string) . '%', 'LIKE')
-//                ->condition('productcode', '%' . db_like($string) . '%', 'LIKE')
-                ->execute();
+        $result = db_select('appmetadata', 'n')
+                ->fields('n', array('apmdname', 'apmddesc'))
+                ->condition(
+                db_or()
+                ->condition('apmdname', '%' . db_like($string) . '%', 'LIKE')
+                ->condition('apmddesc', '%' . db_like($string) . '%', 'LIKE')
+                )->execute();
 
         foreach ($result as $row) {
-            $matches[$row->productpk] = $row->productdesc;
+            $matches[] = ['value' => $row->apmdname, 'label' => $row->apmddesc];
         }
 
         return new JsonResponse($matches);

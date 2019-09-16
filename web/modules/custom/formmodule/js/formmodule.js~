@@ -11,6 +11,7 @@ $(function() {
 			map.addMarker({
 			  lat: element.latitude,
 			  lng: element.longitude,
+			  icon: "/modules/custom/formmodule/js/mapicon.png",
 			  infoWindow: {
 				content: element.content
 			  }
@@ -19,8 +20,8 @@ $(function() {
 		});
 		map.drawPolyline({
 		  path: path,
-		  strokeColor: 'yellow',
-		  strokeOpacity: 0.6,
+		  strokeColor: '#F97429',
+		  strokeOpacity: 1,
 		  strokeWeight: 6
 		});
 	}
