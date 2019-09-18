@@ -22,18 +22,41 @@ Class Formfields_biz {
         //DbTransaction
         $transaction = db_transaction();
 
-        $insertid = db_insert('appmetadata')
-                ->fields(array(
-                    'apmdtype' => $values['apmdtype'],
-                    'apmdlength' => $values['apmdlength'],
-                    'apmddesc' => $values['apmddesc'],
-                    'apmdname' => $values['apmdname'],
-                    'apmdoptions' => $values['apmdoptions'],
-                    'rangelow' => $values['rangelow'],
-                    'rangehigh' => $values['rangehigh'],
-                    'createdby' => \Drupal::currentUser()->id()
-                ))
-                ->execute();
+        if($values['apmdtype'] == 'SELECT'){
+            $string = $values['apmdoptions'];
+
+            $str_arr = explode (",", $string); 
+
+            $insertid = db_insert('appmetadata')
+            ->fields(array(
+                'apmdtype' => $values['apmdtype'],
+                'apmdlength' => $values['apmdlength'],
+                'apmddesc' => $values['apmddesc'],
+                'apmdname' => $values['apmdname'],
+                'apmdoptions' => json_encode($str_arr),
+                'rangelow' => $values['rangelow'],
+                'rangehigh' => $values['rangehigh'],
+                'createdby' => \Drupal::currentUser()->id()
+            ))
+            ->execute();
+
+        }else{
+            $insertid = db_insert('appmetadata')
+            ->fields(array(
+                'apmdtype' => $values['apmdtype'],
+                'apmdlength' => $values['apmdlength'],
+                'apmddesc' => $values['apmddesc'],
+                'apmdname' => $values['apmdname'],
+                'apmdoptions' => $values['apmdoptions'],
+                'rangelow' => $values['rangelow'],
+                'rangehigh' => $values['rangehigh'],
+                'createdby' => \Drupal::currentUser()->id()
+            ))
+            ->execute();
+
+        }
+
+       
 
         if (!$insertid) {
             $transaction->rollback();
@@ -48,7 +71,28 @@ Class Formfields_biz {
 
         $values = $form_state->getValues();
         //DbTransaction
+        if($values['apmdtype'] == 'SELECT'){
 
+        $transaction = db_transaction();
+        $string = $values['apmdoptions'];
+
+        $str_arr = explode (",", $string); 
+
+        $update = db_update('appmetadata')
+                ->fields(array(
+                    'apmdtype' => $values['apmdtype'],
+                    'apmdlength' => $values['apmdlength'],
+                    'apmddesc' => $values['apmddesc'],
+                    'apmdname' => $values['apmdname'],
+                    'apmdoptions' => json_encode($str_arr),
+                    'rangelow' => $values['rangelow'],
+                    'rangehigh' => $values['rangehigh'],
+                    'updatedby' => \Drupal::currentUser()->id(),
+                    'updatedtime' => date('Y-m-d H:i:s', time())
+                ))
+                ->condition('apmdpk', $apmdpk, '=')
+                ->execute();
+        }else{
         $transaction = db_transaction();
 
         $update = db_update('appmetadata')
@@ -65,6 +109,7 @@ Class Formfields_biz {
                 ))
                 ->condition('apmdpk', $apmdpk, '=')
                 ->execute();
+        }       
 
         if (!$update) {
             $transaction->rollback();

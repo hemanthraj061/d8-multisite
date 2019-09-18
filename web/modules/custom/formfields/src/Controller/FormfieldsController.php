@@ -9,6 +9,9 @@ use Drupal\customutil\CustomUtils;
 Class FormfieldsController {
 
     public function formfieldslist() {
+        drupal_flush_all_caches();
+        //echo "dsafsd";
+        //die();
 
         $header = array(
             'apmdpk' => t('Field Name'),
@@ -27,6 +30,12 @@ Class FormfieldsController {
         $query->orderBy('a.apmdname', 'ASC');
 
         $getlist = $query->execute();
+
+        /*echo "<pre>";
+        print_r($getlist);
+        echo "<pre>";
+        die();*/
+        
        
 	$types = CustomUtils::getCodevaluesFormCodetype('MDTY');
 
@@ -77,10 +86,13 @@ Class FormfieldsController {
                                             <div class="kt-portlet__head-actions">',
             '#suffix' => '</div></div></div>',
         ];
-
-
-
-
+        /*
+        echo \Drupal::currentUser()->id();
+        echo "<pre>";
+        print_r($rows);
+        echo "<pre>";
+        die();
+        */
         $form['tablebody']['company_table'] = array(
             '#theme' => 'table',
             '#header' => $header,

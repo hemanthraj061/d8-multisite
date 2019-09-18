@@ -156,7 +156,10 @@ class FormfieldsForm extends FormBase {
 	$form['apmdoptions'] = [
             '#type' => 'textarea',
             '#title' => $this->t('Field Options'),
-            '#default_value' => ($form_state->getValue('apmdoptions') != false) ? $form_state->getValue('apmdoptions') : $formfieldsdet['apmdoptions'],
+            $array = json_decode($formfieldsdet['apmdoptions']),
+            $array1 = implode(",",$array),
+            $json = array_filter($array1),
+            '#default_value' => ($form_state->getValue('apmdoptions') != false) ? $form_state->getValue('apmdoptions') : $json,
             '#attributes' =>  isset($this->display_mode) ? ['readonly' => 'readonly', 'style' => 'background:#F2F3F8;'] : [], 
             '#prefix' => '<div class="col-md-6">',
             '#suffix' => '</div>'
