@@ -67,13 +67,13 @@ Class FormmoduleController {
         $form['tablebody']['table_heading'] = [
             '#markup' => '<div class="kt-portlet__head-label">
                                 <span class="kt-portlet__head-icon">
-                                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                                    <i class="kt-font-brand fa fa-cogs"></i>
                                 </span>
-                                <h3 class="kt-portlet__head-title">
+                                <h3 class="kt-portlet__head-title green2">
                                     List of ' . $result['apmdgroupname'] . '
                                 </h3>
                             </div>',
-            '#prefix' => '<div class="kt-portlet__head kt-portlet__head--lg">',
+            '#prefix' => '<div class="kt-portlet__head kt-portlet__head--lg portlet box green">',
             '#suffix' => '</div>'
         ];
 
