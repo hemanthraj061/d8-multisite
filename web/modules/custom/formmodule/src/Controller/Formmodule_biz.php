@@ -6,7 +6,7 @@ use Drupal\file\Entity\File;
 Class Formmodule_biz {
 
     static function getformmoduledet($apmdgpk = NULL, $appformpk = NULL) {
-	$result = array(); 
+	$result = array();
         if (!empty($apmdgpk)) {
             $headerquery = db_select('appform', 'a');
             $headerquery->fields('a');
