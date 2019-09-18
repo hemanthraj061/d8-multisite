@@ -273,7 +273,7 @@ class FormmoduleForm extends FormBase {
 	}
 	if ($type == 'SELECT' || $type == 'RADIO' || $type == 'CHECK') {
 	  if (isset($this->display_mode)) $form['h'. $j][$fld]['#disabled'] = TRUE;
-	  $form['h'. $j][$fld]['#options'] = !empty($option[$fld]) ? [$option[$fld]] : $options;
+	  $form['h'. $j][$fld]['#options'] = !empty($option[$fld]) ? [$desc => $option[$fld]] : $options;
 	}
 	}
 	if (empty($hdesc)) {$i++;$k++;}

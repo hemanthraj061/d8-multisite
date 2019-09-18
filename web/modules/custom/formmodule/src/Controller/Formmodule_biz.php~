@@ -188,8 +188,9 @@ Class Formmodule_biz {
                 ->condition('module', 'formmodule')
                 ->condition('type', $bopk)
                 ->execute();
-	db_delete('appform')
-                ->condition('appformpk', $appformpk)
+	db_delete('appmilestone')
+                ->condition('botype', 'formmodule')
+                ->condition('bopk', $bopk)
                 ->execute();
     }
 

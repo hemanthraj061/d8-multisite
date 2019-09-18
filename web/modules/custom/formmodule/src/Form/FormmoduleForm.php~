@@ -244,9 +244,9 @@ class FormmoduleForm extends FormBase {
         $query->fields('a', ['appgroupfields']);
 	$getlist = $query->execute();
 	foreach ($getlist as $item) {
-	    $opt[] = $item->appgroupfields;
+	    $opt[] = json_decode($item->appgroupfields, true)[$references[$module][1]];
 	}
-        $option[$references[$module][0]] = json_decode($query->execute()->fetchAssoc()['appgroupfields'], true)[$references[$module][1]];
+        $option[$references[$module][0]] = $opt;
 	}
         foreach ($getfields as $fld) {
 	$desc = CustomUtils::getLabel($fld);
@@ -273,7 +273,7 @@ class FormmoduleForm extends FormBase {
 	}
 	if ($type == 'SELECT' || $type == 'RADIO' || $type == 'CHECK') {
 	  if (isset($this->display_mode)) $form['h'. $j][$fld]['#disabled'] = TRUE;
-	  $form['h'. $j][$fld]['#options'] = !empty($option[$fld]) ? [$option[$fld]] : $options;
+	  $form['h'. $j][$fld]['#options'] = !empty($option[$fld]) ? $option[$fld] : $options;
 	}
 	}
 	if (empty($hdesc)) {$i++;$k++;}
