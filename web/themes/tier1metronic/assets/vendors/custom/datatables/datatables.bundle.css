@@ -15,18 +15,6 @@ table.dataTable td.dataTables_empty,
 table.dataTable th.dataTables_empty {
   text-align: center; }
 
-.portlet.box.green {
-    border: 1px solid #5cd1db;
-}
-
-.portlet.box.green>.portlet-title, .portlet.green, .portlet>.portlet-body.green {
-  background-color: #32c5d2;
-}
-
-.kt-portlet .kt-portlet__head .kt-portlet__head-label .kt-portlet__head-title {
-  color: #fff;
-}
-
 table.dataTable.nowrap th,
 table.dataTable.nowrap td {
   white-space: nowrap; }
